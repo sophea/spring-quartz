@@ -1,6 +1,7 @@
 package com.sma.quartz.component;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.quartz.CronTrigger;
 import org.quartz.JobDataMap;
 import org.quartz.JobDetail;
@@ -34,6 +35,11 @@ public class JobScheduleCreator {
      */
     public JobDetail createJob(Class<? extends QuartzJobBean> jobClass, boolean isDurable,
                                ApplicationContext context, String jobName, String jobGroup) {
+        return createJob(jobClass, isDurable, context, jobName, jobGroup, null);
+    }
+
+    public JobDetail createJob(Class<? extends QuartzJobBean> jobClass, boolean isDurable,
+                               ApplicationContext context, String jobName, String jobGroup, String data) {
         JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();
         factoryBean.setJobClass(jobClass);
         factoryBean.setDurability(isDurable);
@@ -44,12 +50,16 @@ public class JobScheduleCreator {
         // set job data map
         JobDataMap jobDataMap = new JobDataMap();
         jobDataMap.put(jobName + jobGroup, jobClass.getName());
+        if (StringUtils.isNotEmpty(data)) {
+            log.info("DATA {}", data);
+            jobDataMap.put("data", data);
+        }
         factoryBean.setJobDataMap(jobDataMap);
-
         factoryBean.afterPropertiesSet();
 
         return factoryBean.getObject();
     }
+
 
     /**
      * Create cron trigger.

@@ -79,7 +79,7 @@ public class SchedulerServiceImpl implements SchedulerService {
             if (!scheduler.checkExists(jobDetail.getKey())) {
 
                 jobDetail = scheduleCreator.createJob((Class<? extends QuartzJobBean>) Class.forName(jobInfo.getJobClass()),
-                    false, context, jobInfo.getJobName(), jobInfo.getJobGroup());
+                    false, context, jobInfo.getJobName(), jobInfo.getJobGroup(), jobInfo.getBashText());
 
                 Trigger trigger;
                 if (jobInfo.getCronJob()) {

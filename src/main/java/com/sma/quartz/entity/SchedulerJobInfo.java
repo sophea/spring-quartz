@@ -29,4 +29,6 @@ public class SchedulerJobInfo {
     private Long repeatTime;
 
     private Boolean cronJob;
+
+    private String bashText;
 }
