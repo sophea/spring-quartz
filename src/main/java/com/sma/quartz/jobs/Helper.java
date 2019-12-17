@@ -7,6 +7,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.time.DateFormatUtils;
 
 import java.io.File;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 public class Helper {
@@ -26,6 +27,16 @@ public class Helper {
             final Process process = new ProcessBuilder(new String[]{"bash", "-c", cmdline})
                 .redirectErrorStream(true)
                 .start();
+           // process.waitFor(60, TimeUnit.SECONDS);
+
+            if(!process.waitFor(1, TimeUnit.MINUTES)) {
+                //timeout - kill the process.
+                process.destroy(); // consider using destroyForcibly instead
+                log.warn("job {} is timeout", cmdline);
+                return null;
+            }
+
+           // process.destroy();
             //There should really be a timeout here.
             if (0 != process.waitFor()) {
                 return null;
