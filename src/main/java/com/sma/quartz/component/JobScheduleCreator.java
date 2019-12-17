@@ -71,12 +71,16 @@ public class JobScheduleCreator {
      * @return {@link CronTrigger}
      */
     public CronTrigger createCronTrigger(String triggerName, Date startTime, String cronExpression, int misFireInstruction) {
+        return createCronTrigger(triggerName, startTime, cronExpression, misFireInstruction, null);
+    }
+      public CronTrigger createCronTrigger(String triggerName, Date startTime, String cronExpression, int misFireInstruction, String calendarName) {
         log.info("triggerName {} - cronExpression {}", triggerName, cronExpression);
         CronTriggerFactoryBean factoryBean = new CronTriggerFactoryBean();
         factoryBean.setName(triggerName);
         factoryBean.setStartTime(startTime);
         factoryBean.setCronExpression(cronExpression);
         factoryBean.setMisfireInstruction(misFireInstruction);
+        factoryBean.setCalendarName(calendarName);
         try {
             factoryBean.afterPropertiesSet();
         } catch (ParseException e) {

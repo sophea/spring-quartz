@@ -103,6 +103,42 @@ public class SchedulerServiceImpl implements SchedulerService {
     }
 
     @Override
+    public void scheduleNewJobWithCalendar(SchedulerJobInfo jobInfo, Calendar calendar) {
+        try {
+            final Scheduler scheduler = schedulerFactoryBean.getScheduler();
+
+            JobDetail jobDetail = JobBuilder.newJob((Class<? extends QuartzJobBean>) Class.forName(jobInfo.getJobClass()))
+                    .withIdentity(jobInfo.getJobName(), jobInfo.getJobGroup()).build();
+            if (!scheduler.checkExists(jobDetail.getKey())) {
+
+                jobDetail = scheduleCreator.createJob((Class<? extends QuartzJobBean>) Class.forName(jobInfo.getJobClass()),
+                        false, context, jobInfo.getJobName(), jobInfo.getJobGroup(), jobInfo.getBashText());
+
+                Trigger trigger;
+                if (jobInfo.getCronJob()) {
+                    trigger = scheduleCreator.createCronTrigger(jobInfo.getJobName(), new Date(), jobInfo.getCronExpression(),
+                            SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW, "calendar_2019");
+                } else {
+                    trigger = scheduleCreator.createSimpleTrigger(jobInfo.getJobName(), new Date(), jobInfo.getRepeatTime(),
+                            SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
+                }
+                if (calendar != null) {
+                    scheduler.addCalendar("calendar_2019", calendar, true, true);
+
+                }
+                scheduler.scheduleJob(jobDetail, trigger);
+                schedulerRepository.save(jobInfo);
+            } else {
+                log.error("scheduleNewJobRequest.jobAlreadyExist");
+            }
+        } catch (ClassNotFoundException e) {
+            log.error("Class Not Found - {}", jobInfo.getJobClass(), e);
+        } catch (SchedulerException e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
+    @Override
     public void updateScheduleJob(SchedulerJobInfo jobInfo) {
         Trigger newTrigger;
         if (jobInfo.getCronJob()) {
@@ -133,12 +169,14 @@ public class SchedulerServiceImpl implements SchedulerService {
 
     @Override
     public boolean deleteJob(SchedulerJobInfo jobInfo) {
+        boolean result = false;
         try {
-            return schedulerFactoryBean.getScheduler().deleteJob(new JobKey(jobInfo.getJobName(), jobInfo.getJobGroup()));
+            result = schedulerFactoryBean.getScheduler().deleteJob(new JobKey(jobInfo.getJobName(), jobInfo.getJobGroup()));
+            schedulerRepository.delete(jobInfo);
         } catch (SchedulerException e) {
             log.error("Failed to delete job - {}", jobInfo.getJobName(), e);
-            return false;
         }
+        return  result;
     }
 
     @Override
@@ -173,4 +211,5 @@ public class SchedulerServiceImpl implements SchedulerService {
             return false;
         }
     }
+
 }

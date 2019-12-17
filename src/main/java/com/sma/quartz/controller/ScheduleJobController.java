@@ -2,11 +2,16 @@ package com.sma.quartz.controller;
 
 import com.sma.quartz.component.JobScheduleCreator;
 import com.sma.quartz.entity.SchedulerJobInfo;
+import com.sma.quartz.repository.SchedulerRepository;
 import com.sma.quartz.service.SchedulerService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateUtils;
 import org.quartz.*;
+import org.quartz.impl.calendar.DailyCalendar;
+import org.quartz.impl.calendar.HolidayCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.data.domain.Example;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,7 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.ZoneId;
 import java.util.Date;
+import java.util.Optional;
+import java.util.TimeZone;
 
 @Slf4j
 @RestController
@@ -31,6 +39,10 @@ public class ScheduleJobController {
 
     @Autowired
     private SchedulerService schedulerService;
+
+    @Autowired
+    private SchedulerRepository schedulerRepository;
+
     @PostMapping("create")
     public SchedulerJobInfo createNewJob(@RequestParam String name, @RequestParam String cronExpression, @RequestParam String bashText) {
 
@@ -71,6 +83,43 @@ public class ScheduleJobController {
 
 
         return jobInfo;
+    }
+
+    @PostMapping("create-calendar")
+    public SchedulerJobInfo createNewJobWithExcludingCarlendar(@RequestParam String name, @RequestParam String cronExpression, @RequestParam String bashText) {
+
+
+        final SchedulerJobInfo jobInfo = new SchedulerJobInfo();
+
+        jobInfo.setCronJob(true);
+        jobInfo.setJobClass("com.sma.quartz.jobs.ExecuteBashCronJob");
+        jobInfo.setJobName(name);
+        jobInfo.setJobGroup("Group_" + name);
+        jobInfo.setCronExpression(cronExpression);
+        jobInfo.setBashText(bashText);
+
+        HolidayCalendar holidayCalendar = new HolidayCalendar(TimeZone.getTimeZone(ZoneId.of("Asia/Phnom_Penh")));
+        holidayCalendar.addExcludedDate(new Date());
+        holidayCalendar.addExcludedDate(DateUtils.addDays(new Date(), 1));
+        //DailyCalendar dailyCalendar = new DailyCalendar("09:00", "12:00");
+        schedulerService.scheduleNewJobWithCalendar(jobInfo, holidayCalendar);
+
+
+        return jobInfo;
+    }
+
+    @PostMapping("delete")
+    public SchedulerJobInfo deleteJob(@RequestParam String name) {
+
+        SchedulerJobInfo info = new SchedulerJobInfo();
+        info.setJobName(name);
+
+        Optional<SchedulerJobInfo> jobInfo = schedulerRepository.findOne(Example.of(info));
+        if (jobInfo.isPresent()) {
+            schedulerService.deleteJob(jobInfo.get());
+        }
+
+        return jobInfo.get();
     }
 }
 

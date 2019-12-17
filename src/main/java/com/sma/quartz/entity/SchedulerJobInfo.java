@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 /**
- * @author Chamith
+ * @author Sophea Mak
  */
 @Getter
 @Setter
