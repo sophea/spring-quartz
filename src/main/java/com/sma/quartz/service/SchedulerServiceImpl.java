@@ -71,35 +71,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 
     @Override
     public void scheduleNewJob(SchedulerJobInfo jobInfo) {
-        try {
-            Scheduler scheduler = schedulerFactoryBean.getScheduler();
-
-            JobDetail jobDetail = JobBuilder.newJob((Class<? extends QuartzJobBean>) Class.forName(jobInfo.getJobClass()))
-                .withIdentity(jobInfo.getJobName(), jobInfo.getJobGroup()).build();
-            if (!scheduler.checkExists(jobDetail.getKey())) {
-
-                jobDetail = scheduleCreator.createJob((Class<? extends QuartzJobBean>) Class.forName(jobInfo.getJobClass()),
-                    false, context, jobInfo.getJobName(), jobInfo.getJobGroup(), jobInfo.getBashText());
-
-                Trigger trigger;
-                if (jobInfo.getCronJob()) {
-                    trigger = scheduleCreator.createCronTrigger(jobInfo.getJobName(), new Date(), jobInfo.getCronExpression(),
-                        SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
-                } else {
-                    trigger = scheduleCreator.createSimpleTrigger(jobInfo.getJobName(), new Date(), jobInfo.getRepeatTime(),
-                        SimpleTrigger.MISFIRE_INSTRUCTION_FIRE_NOW);
-                }
-
-                scheduler.scheduleJob(jobDetail, trigger);
-                schedulerRepository.save(jobInfo);
-            } else {
-                log.error("scheduleNewJobRequest.jobAlreadyExist");
-            }
-        } catch (ClassNotFoundException e) {
-            log.error("Class Not Found - {}", jobInfo.getJobClass(), e);
-        } catch (SchedulerException e) {
-            log.error(e.getMessage(), e);
-        }
+      scheduleNewJobWithCalendar(jobInfo, null);
     }
 
     @Override
@@ -173,6 +145,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         try {
             result = schedulerFactoryBean.getScheduler().deleteJob(new JobKey(jobInfo.getJobName(), jobInfo.getJobGroup()));
             schedulerRepository.delete(jobInfo);
+            unScheduleJob(jobInfo.getJobName());
         } catch (SchedulerException e) {
             log.error("Failed to delete job - {}", jobInfo.getJobName(), e);
         }

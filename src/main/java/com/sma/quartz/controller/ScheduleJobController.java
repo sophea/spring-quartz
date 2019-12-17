@@ -5,6 +5,7 @@ import com.sma.quartz.entity.SchedulerJobInfo;
 import com.sma.quartz.repository.SchedulerRepository;
 import com.sma.quartz.service.SchedulerService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.quartz.*;
 import org.quartz.impl.calendar.DailyCalendar;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.text.ParseException;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.Optional;
@@ -98,13 +100,7 @@ public class ScheduleJobController {
         jobInfo.setCronExpression(cronExpression);
         jobInfo.setBashText(bashText);
 
-        HolidayCalendar holidayCalendar = new HolidayCalendar(TimeZone.getTimeZone(ZoneId.of("Asia/Phnom_Penh")));
-        holidayCalendar.addExcludedDate(new Date());
-        holidayCalendar.addExcludedDate(DateUtils.addDays(new Date(), 1));
-        //DailyCalendar dailyCalendar = new DailyCalendar("09:00", "12:00");
-        schedulerService.scheduleNewJobWithCalendar(jobInfo, holidayCalendar);
-
-
+        schedulerService.scheduleNewJobWithCalendar(jobInfo, setHolidayCalendar2019());
         return jobInfo;
     }
 
@@ -120,6 +116,30 @@ public class ScheduleJobController {
         }
 
         return jobInfo.get();
+    }
+
+    private HolidayCalendar setHolidayCalendar2019() {
+        final HolidayCalendar holidayCalendar = new HolidayCalendar(TimeZone.getTimeZone(ZoneId.of("Asia/Phnom_Penh")));
+
+        /***/
+        holidayCalendar.addExcludedDate(getDate("2019-11-09"));
+        holidayCalendar.addExcludedDate(getDate("2019-11-10"));
+        holidayCalendar.addExcludedDate(getDate("2019-11-11"));
+        holidayCalendar.addExcludedDate(getDate("2019-11-12"));
+
+        holidayCalendar.addExcludedDate(getDate("2019-12-10"));
+
+        return holidayCalendar;
+    }
+
+    private Date getDate(String yyyymmdd) {
+        final Date date;
+        try {
+            date = DateUtils.parseDate(yyyymmdd, "yyyy-mm-dd");
+            return date;
+        } catch (ParseException e) {
+            return null;
+        }
     }
 }
 
