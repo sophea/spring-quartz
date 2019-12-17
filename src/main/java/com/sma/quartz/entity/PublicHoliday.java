@@ -32,5 +32,6 @@ public class PublicHoliday extends AbstractLongDomainEntity implements Serializa
 
     @Column(name = "date_value")
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private Date dateValue;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    private LocalDate dateValue;
 }
