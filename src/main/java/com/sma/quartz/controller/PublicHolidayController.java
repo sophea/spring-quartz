@@ -9,6 +9,7 @@ import com.sma.quartz.utils.PaginationUtil;
 import com.sma.quartz.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -67,8 +68,14 @@ public class PublicHolidayController {
      * @return
      */
     @RequestMapping(value = "v1/{id}", method = RequestMethod.GET)
-    public ResponseEntity<PublicHoliday> findById(HttpServletRequest request, @PathVariable Long id) {
-        return ResponseUtil.wrapOrNotFound(dao.findById(id));
+    @ResponseBody
+    public PublicHoliday findById(HttpServletRequest request, @PathVariable Long id) {
+       // return ResponseUtil.wrapOrNotFound(dao.findById(id));
+        Optional<PublicHoliday> record = dao.findById(id);
+        if( ! record.isPresent()) {
+            throw new ItemNotFoundBusinessException("object not found");
+        }
+        return record.get();
     }
 
     /**
