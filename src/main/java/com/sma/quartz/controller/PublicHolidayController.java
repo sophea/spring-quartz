@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @RestController
@@ -73,7 +74,7 @@ public class PublicHolidayController {
        // return ResponseUtil.wrapOrNotFound(dao.findById(id));
         Optional<PublicHoliday> record = dao.findById(id);
         if( ! record.isPresent()) {
-            throw new ItemNotFoundBusinessException("object not found");
+            throw new ItemNotFoundBusinessException("not found");
         }
         return record.get();
     }
@@ -89,7 +90,7 @@ public class PublicHolidayController {
     public ResponseEntity<PublicHoliday> update(@PathVariable Long id, @RequestBody PublicHoliday body) {
         final PublicHoliday domain = dao.findById(id).get();
         if (domain == null) {
-             throw new ItemNotFoundBusinessException("not found");
+             throw new ItemNotFoundBusinessException("not found", 404);
         }
         domain.setName(body.getName());
         domain.setState(body.getState());
@@ -133,6 +134,18 @@ public class PublicHolidayController {
         return new ResponseEntity<>(dao.findAll(), HttpStatus.OK);
     }
 
+    /**
+     * delete item by id
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "v1/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
+        log.info("delete id {}", id);
+        dao.deleteById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
     /**
      * {@code GET /users} : get all users.
      *
