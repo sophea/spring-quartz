@@ -91,22 +91,28 @@ public class PublicHolidayController {
         dao.save(domain);
         return new ResponseEntity<>(domain, HttpStatus.OK);
     }
-//
-//    /**
-//     * Get nodes with pagination
-//     *
-//     * @param request
-//     * @param limit
-//     * @param offset
-//     * @return
-//     */
-//    @RequestMapping(value = "v1", method = RequestMethod.GET)
-//    public ResponseEntity<ResponseList<PublicHoliday>> getPage(HttpServletRequest request,
-//                                                          @RequestParam(value = "limit", defaultValue = "10") int limit,
-//                                                          @RequestParam(value = "offset", defaultValue = "0") String offset) {
-//        log.info("============= getPage ==========");
-//        return new ResponseEntity<ResponseList<PublicHoliday>>(dao.getPage(limit, offset), HttpStatus.OK);
-//    }
+
+    /**
+     * Get nodes with pagination
+     *
+     * @param request
+     * @param limit
+     * @param offset
+     * @return
+     */
+    @GetMapping(value = "/v1", produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    public ResponseList<PublicHoliday> getPage(HttpServletRequest request,
+                                                          @RequestParam(value = "limit", defaultValue = "10") int limit,
+                                                          @RequestParam(value = "offset", defaultValue = "0") String offset) {
+        log.info("====get limit {} , offset {} ====", limit, offset);
+        int pageNumber = Integer.parseInt(StringUtils.isEmpty(offset) ? "0" : offset);
+        Pageable pageable = PageRequest.of(pageNumber, limit);
+
+        final Page<PublicHoliday> page = dao.findAll(pageable);
+
+        return new ResponseList<>(page.getContent(), page.getTotalElements(),page.hasNext(), pageNumber + 1, limit,null);
+    }
 
     /**
      * Get all notes
@@ -183,19 +189,19 @@ public class PublicHolidayController {
 
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
-
-    @GetMapping(value = "/v1", produces = { MediaType.APPLICATION_JSON_VALUE })
-    @ResponseBody
-    public ResponseList<PublicHoliday> getPage(@RequestParam(value="pagesize", defaultValue="10") int pagesize,
-                                               @RequestParam(value = "cursorkey", required = false) String cursorkey) {
-        log.info("====get page {} , {} ====", pagesize, cursorkey);
-        int offset = Integer.parseInt(StringUtils.isEmpty(cursorkey) ? "0" : cursorkey);
-        Pageable pageable = PageRequest.of(offset, pagesize);
-
-        final Page<PublicHoliday> page = dao.findAll(pageable);
-
-        ResponseList<PublicHoliday> responseList = new ResponseList<>(page.getContent(), page.getTotalElements(),page.hasNext(), offset +1, pagesize,null);
-
-        return responseList;//dao.getPage(pagesize, cursorkey);
-    }
+//
+//    @GetMapping(value = "/v1", produces = { MediaType.APPLICATION_JSON_VALUE })
+//    @ResponseBody
+//    public ResponseList<PublicHoliday> getPage(@RequestParam(value="pagesize", defaultValue="10") int pagesize,
+//                                               @RequestParam(value = "cursorkey", required = false) String cursorkey) {
+//        log.info("====get page {} , {} ====", pagesize, cursorkey);
+//        int offset = Integer.parseInt(StringUtils.isEmpty(cursorkey) ? "0" : cursorkey);
+//        Pageable pageable = PageRequest.of(offset, pagesize);
+//
+//        final Page<PublicHoliday> page = dao.findAll(pageable);
+//
+//        ResponseList<PublicHoliday> responseList = new ResponseList<>(page.getContent(), page.getTotalElements(),page.hasNext(), offset +1, pagesize,null);
+//
+//        return responseList;//dao.getPage(pagesize, cursorkey);
+//    }
 }

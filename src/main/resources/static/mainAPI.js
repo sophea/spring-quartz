@@ -1,6 +1,6 @@
 
-var cursor = "";
-var pageSize = 10;
+var offset = "";
+var limit = 10;
 var isChange = false;
 var hasNext = false;
 var isSort = true;
@@ -51,8 +51,8 @@ $( document ).ready(function(){
     });
     
     $('#perPage').on('change', function(){
-    	pageSize = $(this).val();
-    	cursor = "";
+    	limit = $(this).val();
+    	offset = "";
     	$("#tableBody").empty();
     	crudLoadMore();
     })
@@ -236,7 +236,7 @@ function crudLoadSchema() {
 }
 
 function crudLoadMore() {
-    if(cursor == "") {
+    if(offset == "") {
     	$("#tableBody").empty();
     }
 
@@ -245,7 +245,7 @@ function crudLoadMore() {
     crudGetPage(body, function(data, statusText, jqXHR) {
     	hasNext = data.hasMore;
     	if(hasNext) {
-    		cursor = data.offset;
+    		offset = data.offset;
     		$('#btnLoadMore').attr("class","btn btn-primary");
     		$('#btnLoadMore').html("Load more");
     		$('#btnLoadMore').attr('onclick','crudLoadMore();');
@@ -502,11 +502,11 @@ function crudCreateEntity() {
  * */
 function crudGetPage(body, successFunction) {
 	if(hasNext) {
-		$.getJSON(apiUrl+"v1?pagesize="+pageSize+"&cursorkey="+cursor, body)
+		$.getJSON(apiUrl+"v1?limit="+limit+"&offset="+offset, body)
 	    .success(successFunction);
     }
 	else {
-		$.getJSON(apiUrl+"v1?pagesize="+pageSize, body)
+		$.getJSON(apiUrl+"v1?limit="+limit, body)
 	    .success(successFunction);
     }
 }

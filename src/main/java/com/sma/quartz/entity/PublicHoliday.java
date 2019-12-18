@@ -3,6 +3,7 @@ package com.sma.quartz.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -18,6 +19,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(catalog = "quartz_demo_db", name = "public_holiday")
+@EntityListeners(AuditingEntityListener.class)
 public class PublicHoliday extends AbstractLongDomainEntity implements Serializable {
 
     @Id
@@ -34,4 +36,6 @@ public class PublicHoliday extends AbstractLongDomainEntity implements Serializa
     @JsonFormat(pattern = "yyyy-MM-dd")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate dateValue;
+
+
 }
