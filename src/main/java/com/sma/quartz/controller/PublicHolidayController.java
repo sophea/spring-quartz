@@ -4,16 +4,13 @@ import com.sma.common.tools.exceptions.ItemNotFoundBusinessException;
 import com.sma.common.tools.response.ResponseList;
 import com.sma.quartz.entity.Field;
 import com.sma.quartz.entity.PublicHoliday;
-import com.sma.quartz.repository.PublicHolidayRepository;
+import com.sma.quartz.service.PublicHolidayService;
 import com.sma.quartz.utils.PaginationUtil;
-import com.sma.quartz.utils.ResponseUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.*;
 
 @RestController
@@ -31,7 +27,7 @@ import java.util.*;
 public class PublicHolidayController {
 
     @Autowired
-    protected PublicHolidayRepository dao;
+    protected PublicHolidayService service;
 
     /**
      * create node with json
@@ -43,7 +39,7 @@ public class PublicHolidayController {
     @RequestMapping(value = "v1/json", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<PublicHoliday> create(HttpServletRequest request, @RequestBody PublicHoliday body) {
         log.info("============= create with json ==========");
-        dao.save(body);
+        service.create(body);
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
@@ -57,7 +53,7 @@ public class PublicHolidayController {
     @RequestMapping(value = "v1", method = RequestMethod.POST)
     public ResponseEntity<PublicHoliday> createWithForm(HttpServletRequest request, @ModelAttribute PublicHoliday domain) {
         log.info("============= create ==========");
-        dao.save(domain);
+        service.create(domain);
         return new ResponseEntity<>(domain, HttpStatus.OK);
     }
 
@@ -72,7 +68,7 @@ public class PublicHolidayController {
     @ResponseBody
     public PublicHoliday findById(HttpServletRequest request, @PathVariable Long id) {
        // return ResponseUtil.wrapOrNotFound(dao.findById(id));
-        Optional<PublicHoliday> record = dao.findById(id);
+        Optional<PublicHoliday> record = service.findById(id);
         if( ! record.isPresent()) {
             throw new ItemNotFoundBusinessException("not found");
         }
@@ -88,16 +84,8 @@ public class PublicHolidayController {
      */
     @RequestMapping(value = "v1/{id}/json", method = RequestMethod.POST, produces = "application/json")
     public ResponseEntity<PublicHoliday> update(@PathVariable Long id, @RequestBody PublicHoliday body) {
-        final PublicHoliday domain = dao.findById(id).get();
-        if (domain == null) {
-             throw new ItemNotFoundBusinessException("not found", 404);
-        }
-        domain.setName(body.getName());
-        domain.setState(body.getState());
-        domain.setNameKh(body.getNameKh());
-        domain.setDateValue(body.getDateValue());
-        dao.save(domain);
-        return new ResponseEntity<>(domain, HttpStatus.OK);
+
+        return new ResponseEntity<>(service.update(id, body), HttpStatus.OK);
     }
 
     /**
@@ -115,9 +103,9 @@ public class PublicHolidayController {
                                                           @RequestParam(value = "offset", defaultValue = "0") String offset) {
         log.info("====get limit {} , offset {} ====", limit, offset);
         int pageNumber = Integer.parseInt(StringUtils.isEmpty(offset) ? "0" : offset);
-        Pageable pageable = PageRequest.of(pageNumber, limit);
+        final PageRequest pageable = PageRequest.of(pageNumber, limit);
 
-        final Page<PublicHoliday> page = dao.findAll(pageable);
+        final Page<PublicHoliday> page = service.getPage(pageable);
 
         return new ResponseList<>(page.getContent(), page.getTotalElements(),page.hasNext(), pageNumber + 1, limit,null);
     }
@@ -131,7 +119,7 @@ public class PublicHolidayController {
     @RequestMapping(value = "v1/all", method = RequestMethod.GET)
     public ResponseEntity<Collection<PublicHoliday>> getAll(HttpServletRequest request) {
         log.info("============= getAll ==========");
-        return new ResponseEntity<>(dao.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(service.getAll(), HttpStatus.OK);
     }
 
     /**
@@ -143,7 +131,7 @@ public class PublicHolidayController {
     @RequestMapping(value = "v1/{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
         log.info("delete id {}", id);
-        dao.deleteById(id);
+        service.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
     /**
@@ -153,8 +141,8 @@ public class PublicHolidayController {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body all users.
      */
     @GetMapping("v2")
-    public ResponseEntity<Page<PublicHoliday> > getAllWithPagination(Pageable pageable) {
-        final Page<PublicHoliday> page = dao.findAll(pageable);
+    public ResponseEntity<Page<PublicHoliday> > getAllWithPagination(PageRequest pageable) {
+        final Page<PublicHoliday> page = service.getPage(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
 
 
