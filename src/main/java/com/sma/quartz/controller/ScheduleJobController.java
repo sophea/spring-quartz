@@ -115,7 +115,7 @@ public class ScheduleJobController {
             schedulerService.deleteJob(jobInfo.get());
         }
 
-        return jobInfo.get();
+        return info;
     }
 
     private HolidayCalendar setHolidayCalendar2019() {

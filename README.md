@@ -15,7 +15,15 @@ This project is about Springboot with Quartz Integration
 - create new job running with bashscript behind
 - create new job with java code and cron job expression
 - create new job with Simple repeating time
-- manage public holiday
+- manage public holiday with CRUD action
+
+   ~~~~
+   create : POST /api/public-holiday/v1
+   update : POST /api/public-holiday/v1/{id}
+   getDetail: GEt /api/public-holiday/v1/{id}
+   delete: DELETE /api/public-holiday/v1/{id}
+   getPage: GET /api/public-holiday/v1?limie={limit}&offset=${offset}
+   ~~~~
 
 
 # Demo
