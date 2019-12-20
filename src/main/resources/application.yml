@@ -7,6 +7,8 @@ server:
         whitelabel:
             enabled: false
 
+spring.jackson.default-property-inclusion: NON_NULL
+spring.jackson.deserialization.fail-on-unknown-properties: true
 
 actuator:
     password: test
@@ -17,7 +19,7 @@ client:
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        password: root
+        password: password
         platform: org.hibernate.dialect.MySQL5Dialect
         url: jdbc:mysql://localhost:3306/quartz_demo_db
         username: root
