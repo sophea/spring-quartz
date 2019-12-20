@@ -53,20 +53,19 @@ public class PublicHolidayController {
     @RequestMapping(value = "v1", method = RequestMethod.POST)
     public ResponseEntity<PublicHoliday> createWithForm(HttpServletRequest request, @ModelAttribute PublicHoliday domain) {
         log.info("============= create ==========");
-        service.create(domain);
+        domain = service.create(domain);
         return new ResponseEntity<>(domain, HttpStatus.OK);
     }
 
     /**
      * find node by id
      *
-     * @param request
      * @param id
      * @return
      */
     @RequestMapping(value = "v1/{id}", method = RequestMethod.GET)
     @ResponseBody
-    public PublicHoliday findById(HttpServletRequest request, @PathVariable Long id) {
+    public PublicHoliday findById(@PathVariable Long id) {
        // return ResponseUtil.wrapOrNotFound(dao.findById(id));
         Optional<PublicHoliday> record = service.findById(id);
         if( ! record.isPresent()) {
@@ -169,11 +168,9 @@ public class PublicHolidayController {
      * createdDate: "datetime"
      * }
      * }
-     *
-     * @param request
      */
     @RequestMapping(value = "v1/schema", method = {RequestMethod.GET}, produces = {MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<Map<String, Object>> getschma(HttpServletRequest request) {
+    public ResponseEntity<Map<String, Object>> getSchema() {
         final Map<String, Object> body = new HashMap<String, Object>();
 
 
@@ -197,19 +194,5 @@ public class PublicHolidayController {
 
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
-//
-//    @GetMapping(value = "/v1", produces = { MediaType.APPLICATION_JSON_VALUE })
-//    @ResponseBody
-//    public ResponseList<PublicHoliday> getPage(@RequestParam(value="pagesize", defaultValue="10") int pagesize,
-//                                               @RequestParam(value = "cursorkey", required = false) String cursorkey) {
-//        log.info("====get page {} , {} ====", pagesize, cursorkey);
-//        int offset = Integer.parseInt(StringUtils.isEmpty(cursorkey) ? "0" : cursorkey);
-//        Pageable pageable = PageRequest.of(offset, pagesize);
-//
-//        final Page<PublicHoliday> page = dao.findAll(pageable);
-//
-//        ResponseList<PublicHoliday> responseList = new ResponseList<>(page.getContent(), page.getTotalElements(),page.hasNext(), offset +1, pagesize,null);
-//
-//        return responseList;//dao.getPage(pagesize, cursorkey);
-//    }
+
 }

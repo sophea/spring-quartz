@@ -126,7 +126,6 @@ public class ScheduleJobController {
         holidayCalendar.addExcludedDate(getDate("2019-11-10"));
         holidayCalendar.addExcludedDate(getDate("2019-11-11"));
         holidayCalendar.addExcludedDate(getDate("2019-11-12"));
-
         holidayCalendar.addExcludedDate(getDate("2019-12-10"));
 
         return holidayCalendar;
