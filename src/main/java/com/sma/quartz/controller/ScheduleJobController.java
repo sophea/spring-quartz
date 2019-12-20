@@ -1,30 +1,32 @@
 package com.sma.quartz.controller;
 
+import com.sma.common.tools.exceptions.ItemNotFoundBusinessException;
+import com.sma.common.tools.response.ResponseList;
 import com.sma.quartz.component.JobScheduleCreator;
+import com.sma.quartz.entity.Field;
 import com.sma.quartz.entity.SchedulerJobInfo;
 import com.sma.quartz.repository.SchedulerRepository;
+import com.sma.quartz.service.ScheduleJobInfoService;
 import com.sma.quartz.service.SchedulerService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
-import org.quartz.*;
-import org.quartz.impl.calendar.DailyCalendar;
 import org.quartz.impl.calendar.HolidayCalendar;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.domain.Example;
-import org.springframework.scheduling.quartz.QuartzJobBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.quartz.SchedulerFactoryBean;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.ParseException;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.Optional;
-import java.util.TimeZone;
+import java.util.*;
 
 @Slf4j
 @RestController
@@ -41,6 +43,9 @@ public class ScheduleJobController {
 
     @Autowired
     private SchedulerService schedulerService;
+
+    @Autowired
+    private ScheduleJobInfoService scheduleJobInfoService;
 
     @Autowired
     private SchedulerRepository schedulerRepository;
@@ -116,6 +121,109 @@ public class ScheduleJobController {
         }
 
         return info;
+    }
+
+    /**
+     * schema api : Content-Type: application/x-www-form-urlencoded
+     * example json value
+     * <p>
+     * {
+     * primaryKeyName: "id",
+     * tableName: "Country",
+     * primaryKeyType: "long",
+     * columns: {
+     * comingSoon: "boolean",
+     * flagImageUrl: "text",
+     * isoCode: "text",
+     * name: "text",
+     * state: "long",
+     * tcsUrl: "text",
+     * price : "number",
+     * createdDate: "datetime"
+     * }
+     * }
+     */
+    @RequestMapping(value = "v1/schema", method = {RequestMethod.GET}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Map<String, Object>> getSchema() {
+        final Map<String, Object> body = new HashMap<String, Object>();
+
+        final List<Field> columns = new ArrayList<>();
+        columns.add(new Field("name", "text"));
+        columns.add(new Field("cronExpression", "text"));
+        columns.add(new Field("cronJob", "boolean"));
+        columns.add(new Field("bashText", "text"));
+        body.put("columns", columns);
+        body.put("tableName", "scheduler_job_info");
+        body.put("primaryKeyName", "id");
+        body.put("primaryKeyType", "long");
+
+        return new ResponseEntity<>(body, HttpStatus.OK);
+    }
+
+
+    /**
+     * Get nodes with pagination
+     *
+     * @param request
+     * @param limit
+     * @param offset
+     * @return
+     */
+    @GetMapping(value = "/v1", produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    public ResponseList<SchedulerJobInfo> getPage(HttpServletRequest request,
+                                               @RequestParam(value = "limit", defaultValue = "10") int limit,
+                                               @RequestParam(value = "offset", defaultValue = "0") String offset) {
+        log.info("====get limit {} , offset {} ====", limit, offset);
+        int pageNumber = Integer.parseInt(StringUtils.isEmpty(offset) ? "0" : offset);
+        final PageRequest pageable = PageRequest.of(pageNumber, limit);
+
+        final Page<SchedulerJobInfo> page = scheduleJobInfoService.getPage(pageable);
+
+        return new ResponseList<>(page.getContent(), page.getTotalElements(),page.hasNext(), pageNumber + 1, limit,null);
+    }
+
+    /**
+     * find node by id
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "v1/{id}", method = RequestMethod.GET)
+    @ResponseBody
+    public SchedulerJobInfo findById(@PathVariable Long id) {
+        // return ResponseUtil.wrapOrNotFound(dao.findById(id));
+        Optional<SchedulerJobInfo> record = scheduleJobInfoService.findById(id);
+        if( ! record.isPresent()) {
+            throw new ItemNotFoundBusinessException("not found");
+        }
+        return record.get();
+    }
+
+    /**
+     * delete item by id
+     *
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "v1/{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Void> delete(@PathVariable(value = "id") Long id) {
+        log.info("delete id {}", id);
+        schedulerService.deleteJob(scheduleJobInfoService.findById(id).get());
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    /**
+     * update node with id
+     *
+     * @param id
+     * @param body
+     * @return
+     */
+    @RequestMapping(value = "v1/{id}/json", method = RequestMethod.POST, produces = "application/json")
+    public ResponseEntity<SchedulerJobInfo> update(@PathVariable Long id, @RequestBody SchedulerJobInfo body) {
+        final SchedulerJobInfo domain = scheduleJobInfoService.update(id, body);
+        schedulerService.updateScheduleJob(domain);
+        return new ResponseEntity<>(domain, HttpStatus.OK);
     }
 
     private HolidayCalendar setHolidayCalendar2019() {

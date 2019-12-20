@@ -12,6 +12,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class SchedulerServiceImpl implements SchedulerService {
     private SchedulerFactoryBean schedulerFactoryBean;
 
     @Autowired
-    private SchedulerRepository schedulerRepository;
+    private ScheduleJobInfoService scheduleJobInfoService;
 
     @Autowired
     private ApplicationContext context;
@@ -34,7 +35,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 
     @Override
     public void startAllSchedulers() {
-        List<SchedulerJobInfo> jobInfoList = schedulerRepository.findAll();
+        final Collection<SchedulerJobInfo> jobInfoList = scheduleJobInfoService.getAll();
         if (jobInfoList != null) {
             Scheduler scheduler = schedulerFactoryBean.getScheduler();
             jobInfoList.forEach(jobInfo -> {
@@ -99,7 +100,7 @@ public class SchedulerServiceImpl implements SchedulerService {
 
                 }
                 scheduler.scheduleJob(jobDetail, trigger);
-                schedulerRepository.save(jobInfo);
+                scheduleJobInfoService.create(jobInfo);
             } else {
                 log.error("scheduleNewJobRequest.jobAlreadyExist");
             }
@@ -122,7 +123,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         }
         try {
             schedulerFactoryBean.getScheduler().rescheduleJob(TriggerKey.triggerKey(jobInfo.getJobName()), newTrigger);
-            schedulerRepository.save(jobInfo);
+            scheduleJobInfoService.getRepository().save(jobInfo);
         } catch (SchedulerException e) {
             log.error(e.getMessage(), e);
         }
@@ -144,7 +145,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         boolean result = false;
         try {
             result = schedulerFactoryBean.getScheduler().deleteJob(new JobKey(jobInfo.getJobName(), jobInfo.getJobGroup()));
-            schedulerRepository.delete(jobInfo);
+            scheduleJobInfoService.getRepository().delete(jobInfo);
             unScheduleJob(jobInfo.getJobName());
         } catch (SchedulerException e) {
             log.error("Failed to delete job - {}", jobInfo.getJobName(), e);

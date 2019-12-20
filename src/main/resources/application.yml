@@ -17,7 +17,7 @@ client:
 spring:
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        password: password
+        password: root
         platform: org.hibernate.dialect.MySQL5Dialect
         url: jdbc:mysql://localhost:3306/quartz_demo_db
         username: root

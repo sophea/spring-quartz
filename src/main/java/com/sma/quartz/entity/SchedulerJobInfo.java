@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 /**
  * @author Sophea Mak
@@ -12,7 +13,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @Table(catalog = "quartz_demo_db", name = "scheduler_job_info")
-public class SchedulerJobInfo {
+public class SchedulerJobInfo  extends AbstractLongDomainEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

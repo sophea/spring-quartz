@@ -3,30 +3,33 @@ package com.sma.quartz.service;
 
 import com.sma.common.tools.exceptions.ItemNotFoundBusinessException;
 import com.sma.quartz.entity.PublicHoliday;
+import com.sma.quartz.entity.SchedulerJobInfo;
 import com.sma.quartz.repository.PublicHolidayRepository;
+import com.sma.quartz.repository.SchedulerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-@Service("PublicHolidayServiceImpl")
+
+
+@Service("scheduleJobInfoService")
 @Slf4j
-public class PublicHolidayServiceImpl extends BaseService<PublicHolidayRepository, PublicHoliday> implements PublicHolidayService {
+public class ScheduleJobInfoServiceImpl extends BaseService<SchedulerRepository, SchedulerJobInfo> implements ScheduleJobInfoService {
 
     @Autowired
-    private PublicHolidayRepository repository;
+    private SchedulerRepository repository;
 
     @Override
-    public PublicHolidayRepository getRepository() {
+    public SchedulerRepository getRepository() {
         return repository;
     }
 
 
-
     @Override
-    public PublicHoliday update(Long id, PublicHoliday item) {
-        Optional<PublicHoliday> domain = findById(id);
+    public SchedulerJobInfo update(Long id, SchedulerJobInfo item) {
+        Optional<SchedulerJobInfo> domain = findById(id);
         if (!domain.isPresent()) {
             throw new ItemNotFoundBusinessException("Item not found");
         }
