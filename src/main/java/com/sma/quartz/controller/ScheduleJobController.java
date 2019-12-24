@@ -92,6 +92,23 @@ public class ScheduleJobController {
         return jobInfo;
     }
 
+    @PostMapping("v1/json")
+    public SchedulerJobInfo createNewJobWithExcludingCarlendar(@RequestBody SchedulerJobInfo body) {
+
+
+        final SchedulerJobInfo jobInfo = new SchedulerJobInfo();
+
+        jobInfo.setCronJob(true);
+        jobInfo.setJobClass("com.sma.quartz.jobs.ExecuteBashCronJob");
+        jobInfo.setJobName(body.getJobName());
+        jobInfo.setJobGroup("Group_" + body.getJobName());
+        jobInfo.setCronExpression(body.getCronExpression());
+        jobInfo.setBashText(body.getBashText());
+
+        schedulerService.scheduleNewJobWithCalendar(jobInfo, setHolidayCalendar2019());
+        return jobInfo;
+    }
+
     @PostMapping("create-calendar")
     public SchedulerJobInfo createNewJobWithExcludingCarlendar(@RequestParam String name, @RequestParam String cronExpression, @RequestParam String bashText) {
 
@@ -148,7 +165,7 @@ public class ScheduleJobController {
         final Map<String, Object> body = new HashMap<String, Object>();
 
         final List<Field> columns = new ArrayList<>();
-        columns.add(new Field("name", "text"));
+        columns.add(new Field("jobName", "text"));
         columns.add(new Field("cronExpression", "text"));
         columns.add(new Field("cronJob", "boolean"));
         columns.add(new Field("bashText", "text"));

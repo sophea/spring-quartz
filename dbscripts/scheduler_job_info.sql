@@ -1,12 +1,12 @@
 DROP TABLE IF EXISTS `scheduler_job_info`;
 CREATE TABLE `scheduler_job_info` (
   `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `cron_expression` varchar(255) DEFAULT NULL,
-  `cron_job` bit(1) DEFAULT NULL,
-  `job_class` varchar(255) DEFAULT NULL,
-  `job_group` varchar(255) DEFAULT NULL,
-  `job_name` varchar(255) DEFAULT NULL,
-  `repeat_time` bigint(20) DEFAULT NULL,
+  `cronExpression` varchar(255) DEFAULT NULL,
+  `cronJob` bit(1) DEFAULT NULL,
+  `jobClass` varchar(255) DEFAULT NULL,
+  `jobGroup` varchar(255) DEFAULT NULL,
+  `jobName` varchar(255) DEFAULT NULL,
+  `repeatTime` bigint(20) DEFAULT NULL,
   `bashText` text DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=INNODB;
