@@ -67,3 +67,5 @@ spring:
 json:
     errormsg: #Sorry, something went wrong. Please try again later
     diagnosticsDisabled: false
+
+core.authorization.jwks.url: http://localhost:8081/.well-known/jwks.json

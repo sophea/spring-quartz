@@ -1,6 +1,7 @@
 package com.sma.quartz.controller;
 
 import com.sma.quartz.config.SecurityRoles;
+import com.sma.quartz.security.jtw.AuthorizationCheck;
 import com.sma.quartz.security.jtw.model.Client;
 import com.sma.quartz.security.jtw.model.ClientRole;
 import com.sma.quartz.security.jtw.model.Secret;
@@ -51,6 +52,12 @@ public class SecretController {
         clientRepository.save(client);
         //clientRepository.save(client);
         return client;
+    }
+
+    @GetMapping("/test")
+    @AuthorizationCheck(roles = { SecurityRoles.ROLE_MOBILE_CLIENT })
+    public String test() {
+        return "TESTING";
     }
 
     private ClientRole roleUser() {
