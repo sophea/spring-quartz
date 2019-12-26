@@ -44,7 +44,6 @@ public class Client {
     }
 
     public List<String> getGroups() {
-        Hibernate.initialize(clientGroups);
         return clientGroups.stream().map(ClientGroup::getName).collect(Collectors.toList());
     }
 }

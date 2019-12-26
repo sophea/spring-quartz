@@ -33,7 +33,7 @@ public class ClientService {
             throw new ItemNotFoundBusinessException(String.format("Client id '%s' is not well formatted.", clientId), 405);
         }
 
-        return clientRepository.findByIdWorkaround(clientId).filter(client -> new Secret(clientSecret)
+        return clientRepository.findById(clientId).filter(client -> new Secret(clientSecret)
                 .isMatched(client.getPasswordHash())).orElseThrow(() -> new ItemNotFoundBusinessException("Client id and client secret do not match.", 406));
     }
 }

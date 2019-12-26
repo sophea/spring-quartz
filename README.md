@@ -12,7 +12,7 @@ This project is about Springboot with Quartz Integration
 
 # Features:
 
-- create new job running with bashscript behind
+- create new job running with bash script behind
 - create new job with java code and cron job expression
 - create new job with Simple repeating time
 - manage public holiday with CRUD action
@@ -22,7 +22,7 @@ This project is about Springboot with Quartz Integration
    update : POST /api/public-holiday/v1/{id}
    getDetail: GEt /api/public-holiday/v1/{id}
    delete: DELETE /api/public-holiday/v1/{id}
-   getPage: GET /api/public-holiday/v1?limie={limit}&offset=${offset}
+   getPage: GET /api/public-holiday/v1?limit={limit}&offset=${offset}
    ~~~~
 
 

@@ -49,19 +49,18 @@ public class SecretController {
         client.setPasswordHash(new Secret(secret).getHash());
         client.setClientRoles(Arrays.asList(roleUser(), roleAdminUser()));
         clientRepository.save(client);
+        //clientRepository.save(client);
         return client;
     }
 
     private ClientRole roleUser() {
         final ClientRole role = new ClientRole();
-        role.setId(UUID.randomUUID().toString());
         role.setRole(SecurityRoles.ROLE_MOBILE_CLIENT);
         return role;
     }
 
     private ClientRole roleAdminUser() {
         final ClientRole role = new ClientRole();
-        role.setId(UUID.randomUUID().toString());
         role.setRole(SecurityRoles.ROLE_BACKOFFICE_ADMIN);
         return role;
     }
