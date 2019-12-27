@@ -1,5 +1,7 @@
 package com.sma.quartz.security.jtw;
 
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
@@ -11,7 +13,7 @@ import static com.sma.quartz.security.jtw.exception.ErrorCode.CORE_002;
 import static com.sma.quartz.security.jtw.exception.ErrorCode.CORE_003;
 import static com.sma.quartz.security.jtw.exception.ErrorMessage.*;
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
-
+@Slf4j
 public class AuthorizationHandlerInterceptor extends HandlerInterceptorAdapter {
 
     private JwtSecurityService jwtSecurityService;
@@ -38,8 +40,9 @@ public class AuthorizationHandlerInterceptor extends HandlerInterceptorAdapter {
             try {
                 request.setAttribute(CLAIMS_SET, jwtSecurityService.getClaimsSetFromToken(accessToken));
             } catch (Exception e) {
+               // log.error(e.getMessage(), e);
                 request.setAttribute(ERROR_CODE, CORE_003);
-                request.setAttribute(ERROR_MESSAGE, e.getMessage());
+                request.setAttribute(ERROR_MESSAGE, "The token is invalid or it is expired");
             }
         }
         return true;

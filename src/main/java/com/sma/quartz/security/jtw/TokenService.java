@@ -77,7 +77,6 @@ public class TokenService {
 
             return new AccessToken(signedJWT.serialize(), expiryTimeInSeconds);
         } catch (JOSEException e) {
-            //throw new TokenException(T002, e.getMessage());
             throw new InternalBusinessException(e.getMessage(), 1000);
         }
     }
@@ -102,8 +101,7 @@ public class TokenService {
 
     private static PrivateKey getPrivateKeyFromBase64String(String privateKeyString) throws NoSuchAlgorithmException, InvalidKeySpecException {
         final PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(Base64.getDecoder().decode(privateKeyString));
-        final KeyFactory kf;
-        kf = KeyFactory.getInstance(RSA);
+        final KeyFactory kf = KeyFactory.getInstance(RSA);
         return kf.generatePrivate(spec);
     }
 }
