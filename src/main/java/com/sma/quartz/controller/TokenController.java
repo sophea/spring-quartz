@@ -1,5 +1,6 @@
 package com.sma.quartz.controller;
 
+import com.sma.common.tools.exceptions.AuthenticationBusinessException;
 import com.sma.common.tools.exceptions.InvalidParametersBusinessException;
 import com.sma.quartz.security.jtw.ClientService;
 import com.sma.quartz.security.jtw.TokenService;
@@ -38,6 +39,10 @@ public class TokenController {
             //throw new TokenException(T003, String.format(GRANT_TYPE_NOT_SUPPORTED, grantType));
             throw new InvalidParametersBusinessException(String.format("Grant Type %s not supported.", grantType, 400));
         }
-        return tokenService.generateToken(clientId, clientService.getClient(clientId, clientSecret));
+        try {
+            return tokenService.generateToken(clientId, clientService.getClient(clientId, clientSecret));
+        } catch (Exception e) {
+            throw new AuthenticationBusinessException("The username or password is not correct");
+        }
     }
 }
