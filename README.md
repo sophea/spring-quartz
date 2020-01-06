@@ -34,3 +34,27 @@ CRUD actions : http://localhost:8081/holiday.html
 
 ````
  
+ 
+## Generate JWT Private key
+ 
+ There is online tool to generate public/private key (2048 bit): https://www.devglan.com/online-tools/rsa-encryption-decryption
+ 
+ You can write java code to generate this private key
+ 
+ ````
+  public static void main(String[] args) throws NoSuchAlgorithmException, JOSEException {
+         KeyPairGenerator kpg = KeyPairGenerator.getInstance("RSA");
+         kpg.initialize(2048);
+         KeyPair kp = kpg.generateKeyPair();
+         System.out.println(Base64.getEncoder().encodeToString(kp.getPrivate().getEncoded()));
+ 
+         RSAKey jwk = new RSAKeyGenerator(2048)
+                 .keyUse(KeyUse.SIGNATURE) // indicate the intended use of the key
+                 .keyID(UUID.randomUUID().toString()) // give the key a unique ID
+                 .generate();
+ 
+         // Output the private and public RSA JWK parameters
+         System.out.println(jwk);
+         System.out.println(Base64.getEncoder().encodeToString(jwk.toPrivateKey().getEncoded()));
+     }
+  ````
