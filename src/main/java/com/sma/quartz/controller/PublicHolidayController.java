@@ -180,7 +180,7 @@ public class PublicHolidayController {
         columns.add(new Field("dateValue", "text"));
         columns.add(new Field("createdDate", "datetime"));
         columns.add(new Field("updatedDate", "datetime"));
-        columns.add(new Field("xxxx", "text", "defaultValue"));
+     //   columns.add(new Field("xxxx", "text", "defaultValue"));
         // test
         // columns.add(new Field("gender", "select", Arrays.asList(new Data("1", "Female"), new Data("2", "Male"))));
         /*

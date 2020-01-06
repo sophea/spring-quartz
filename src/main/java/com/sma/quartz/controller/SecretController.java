@@ -29,14 +29,9 @@ public class SecretController {
 
     @Autowired
     private ClientRepository clientRepository;
-    //@PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public Secret createPasswordAndHash() {
         final Secret responseBody = new Secret();
-//        if (debug) {
-//            responseBody.getClientSecret();
-//            responseBody.getHash();
-//        }
         return responseBody;
     }
 

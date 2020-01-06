@@ -9,8 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.UUID;
-
 @Service
 @Slf4j
 @Transactional
@@ -25,13 +23,6 @@ public class ClientService {
 
     @Transactional
     public Client getClient(String clientId, String clientSecret) {
-        try {
-            if (!clientId.toLowerCase().equals(UUID.fromString(clientId).toString())) {
-                throw new ItemNotFoundBusinessException(String.format("Client id '%s' is not well formatted.", clientId), 404);
-            }
-        } catch (IllegalArgumentException e) {
-            throw new ItemNotFoundBusinessException(String.format("Client id '%s' is not well formatted.", clientId), 405);
-        }
 
         return clientRepository.findById(clientId).filter(client -> new Secret(clientSecret)
                 .isMatched(client.getPasswordHash())).orElseThrow(() -> new ItemNotFoundBusinessException("Client id and client secret do not match.", 406));

@@ -12,7 +12,7 @@ server:
             enabled: false
 
 spring.jackson.default-property-inclusion: NON_NULL
-spring.jackson.deserialization.fail-on-unknown-properties: true
+spring.jackson.deserialization.fail-on-unknown-properties: false
 
 actuator:
     password: test
@@ -22,7 +22,6 @@ client:
     username: clientId
 spring:
     datasource:
-        driver-class-name: com.mysql.cj.jdbc.Driver
         password: root
         platform: org.hibernate.dialect.MySQL5Dialect
         url: jdbc:mysql://localhost:3306/quartz_demo_db
