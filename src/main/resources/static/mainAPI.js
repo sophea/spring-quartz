@@ -8,6 +8,7 @@ var isSort = true;
 
 $( document ).ready(function(){
 	// onload
+    addLeftMenu();
 	crudLoadSchema();
 	crudLoadMore();
 	
@@ -647,3 +648,9 @@ $(function() {
 });
 
 
+function addLeftMenu() {
+	$("#leftMenu").html("<a href='index.html' class='brand-link'> <span class='brand-text font-weight-light'>Home</span> </a> " +
+		"<a href='holiday.html' class='brand-link'><span class='brand-text font-weight-light'>Holiday</span> </a>" +
+        "<a href='jobs.html' class='brand-link'><span class='brand-text font-weight-light'>Jobs</span> </a>"
+	);
+}
