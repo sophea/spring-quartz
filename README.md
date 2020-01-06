@@ -28,6 +28,8 @@ This project is about Springboot with Quartz Integration
 
 # Demo
 ````
+loging : http://localhost:8081/login.html  (admin/abc@2019)
+
 CRUD actions : http://localhost:8081/holiday.html
 
 ````
