@@ -94,7 +94,7 @@
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 
-
+<script src="mainAPI.js"></script>
 <script type="text/javascript">
     $("#errorMessage").hide();
     var endpointApiUrl ="/api/";
@@ -118,13 +118,14 @@
                     client_secret : $("#password").val(),
                     grant_type : "client_credentials"
                 },
-                dataType 	: "text",
+                dataType 	: "json",
                 error 		: function(jqXHR, textStatus, errorThrown) {
                     $("#errorMessage").show();
                 },
                 success 	: function(data, textStatus, jqXHR) {
                   //  $("#createNewJobTypeResponse").text(data);
                     //TODOs : store access token
+                    storeToken(data.accessToken);
                     window.location.href = "holiday.html";
                 },
                 complete : function(jqXHR, textStatus) {

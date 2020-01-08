@@ -672,9 +672,22 @@ function addLeftMenu() {
         "<ul class=\"nav nav-pills nav-sidebar flex-column\" data-widget=\"treeview\" role=\"menu\" data-accordion=\"false\">"+
         "<li class=\"nav-item\"> <a class=\"nav-link\" href=\"holiday.html\"> <i class=\"far fa-circle nav-icon\"></i> <p> Holiday </p> </a> </li>" +
         "<li class=\"nav-item\"> <a class=\"nav-link\" href=\"jobs.html\"> <i class=\"far fa-circle nav-icon\"></i> <p> Jobs </p> </a> </li>" +
-        "<li class=\"nav-item\"> <a class=\"nav-link\" href=\"logout.html\"> <i class=\"nav-icon fas fa-sign-out-alt\"></i> <p> Logout </p> </a> </li>" +
+        "<li class=\"nav-item\"> <a class=\"nav-link\" href=\"javascript:logout();\"> <i class=\"nav-icon fas fa-sign-out-alt\"></i> <p> Logout </p> </a> </li>" +
 		"</ul></nav>" +
         <!-- /.sidebar-menu -->
 		"</div>"
 	);
+}
+
+
+function storeToken(token) {
+    localStorage.setItem('token', token);
+}
+function getToken() {
+    return this.localStorage.getItem('token');
+}
+
+function logout() {
+	this.localStorage.clear();
+	window.location.href="index.html";
 }
