@@ -649,8 +649,32 @@ $(function() {
 
 
 function addLeftMenu() {
-	$("#leftMenu").html("<a href='index.html' class='brand-link'> <span class='brand-text font-weight-light'>Home</span> </a> " +
-		"<a href='holiday.html' class='brand-link'><span class='brand-text font-weight-light'>Holiday</span> </a>" +
-        "<a href='jobs.html' class='brand-link'><span class='brand-text font-weight-light'>Jobs</span> </a>"
+
+    <!-- Branding Open -->
+    $("#leftMenu").html(" <a class=\"brand-link navbar-primary\" href=\"index.html\">" +
+		// " <img alt='Logo' class='brand-image img-circle elevation-3' style='opacity: .8' src='dist/img/AdminLTELogo.png'>" +
+        "<span class=\"brand-text font-weight-light\">  Dashboard</span></a>" +
+        <!-- Branding Close -->
+
+       "<div class=\"sidebar\">" +
+        <!-- Sidebar Open -->
+    	"<div class=\"user-panel mt-3 pb-3 mb-3 d-flex\">" +
+        "<div class=\"image\">" +
+        "<img class=\"img-circle elevation-2\" alt=\"User Image\" src=\"img/user.png\">" +
+        "</div>" +
+        "<div class=\"info\">" +
+        "<a class=\"d-block\" href=\"profile.html\">" +
+        "<span>Sophea MAK</span>" +
+        "</a>" +
+        "</div>"+
+        "</div>" +
+        "<nav class=\"mt-2\">" +
+        "<ul class=\"nav nav-pills nav-sidebar flex-column\" data-widget=\"treeview\" role=\"menu\" data-accordion=\"false\">"+
+        "<li class=\"nav-item\"> <a class=\"nav-link\" href=\"holiday.html\"> <i class=\"far fa-circle nav-icon\"></i> <p> Holiday </p> </a> </li>" +
+        "<li class=\"nav-item\"> <a class=\"nav-link\" href=\"jobs.html\"> <i class=\"far fa-circle nav-icon\"></i> <p> Jobs </p> </a> </li>" +
+        "<li class=\"nav-item\"> <a class=\"nav-link\" href=\"logout.html\"> <i class=\"nav-icon fas fa-sign-out-alt\"></i> <p> Logout </p> </a> </li>" +
+		"</ul></nav>" +
+        <!-- /.sidebar-menu -->
+		"</div>"
 	);
 }
