@@ -12,8 +12,6 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.password.NoOpPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
@@ -62,7 +60,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/healthcheck/v1").permitAll()
-               // .antMatchers(CLIENT_API + ALL).hasRole(SecurityRoles.MOBILE_CLIENT)
+                .antMatchers(CLIENT_API + ALL).hasRole(SecurityRoles.MOBILE_CLIENT)
                 .antMatchers("/actuator/**").hasRole(SecurityRoles.ACTUATOR)
                 .antMatchers(ADMIN_API + ALL).hasRole(SecurityRoles.BACKOFFICE_ADMIN);
 
@@ -76,11 +74,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         web.ignoring().antMatchers(HttpMethod.OPTIONS, ALL).and()
                 .ignoring().antMatchers("/actuator/info").and()
                 .ignoring().antMatchers("/actuator/health");
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return NoOpPasswordEncoder.getInstance();
     }
 
     private static class MyWebMvcConfigurer implements WebMvcConfigurer {

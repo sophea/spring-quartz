@@ -7,21 +7,15 @@ import javax.annotation.PostConstruct;
 import java.util.TimeZone;
 
 @SpringBootApplication
-//@EnableJpaAuditing(auditorAwareRef = "auditorAware")
-public class QuartzApplication {
+public class Application {
 
     @PostConstruct
     void init() {
         TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
     }
 
-//    @Bean
-//    public AuditorAware<String> auditorAware() {
-//        return new AuditorAwareImpl();
-//    }
-
     public static void main(String[] args) {
-        SpringApplication.run(QuartzApplication.class, args);
+        SpringApplication.run(Application.class, args);
     }
 
 }
