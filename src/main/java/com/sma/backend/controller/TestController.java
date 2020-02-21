@@ -19,4 +19,10 @@ public class TestController {
     public String test() {
         return "TESTING";
     }
+
+    @GetMapping("/test2")
+    //@AuthorizationCheck(roles = { SecurityRoles.ROLE_MOBILE_CLIENT, SecurityRoles.ROLE_BACKOFFICE_ADMIN })
+    public String test2() {
+        return "TESTING no user roles";
+    }
 }
