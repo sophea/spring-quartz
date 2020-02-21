@@ -66,6 +66,7 @@ public class TokenService {
                     issueTime(issueTime).
                     notBeforeTime(issueTime).
                     jwtID(UUID.randomUUID().toString())
+                    .claim(CLAIM_ID, client.getId())
                     .claim(CLAIM_NAME, client.getName())
                     .claim(CLAIM_ROLES, client.getRoles())
                     .claim(CLAIM_GROUPS, client.getGroups()).build();
