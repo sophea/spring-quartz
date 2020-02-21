@@ -49,7 +49,7 @@ public class TokenService {
 
     @PostConstruct
     public void init() throws InvalidKeySpecException, NoSuchAlgorithmException {
-        PrivateKey privateKey = getPrivateKeyFromBase64String(privateKeyBase64String);
+        final PrivateKey privateKey = getPrivateKeyFromBase64String(privateKeyBase64String);
         signer = new RSASSASigner(privateKey);
         jwks = generateJwks(privateKey);
     }

@@ -1,2 +1,0 @@
-org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.sma.quartz.security.jtw.autoconfiguration.AuthorizationCheckAutoConfiguration
