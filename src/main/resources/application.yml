@@ -1,10 +1,6 @@
-jwt:
-    private.key: MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDGVG+iiIzvx2gnEvh/h9TuJ2UjFkt2fT/jKdhnp7IJ8lebF47c/KFLMnyA3WvtmxH7jqVa7O3+960rczpaMf/hfsT9ZK1aEs53VGxTKkeOo4f9GLEWE28d9Ub/1zU2eSji0ZjPqC6LGLwsdIwWdVw+v+nKlzTZWvhLXSKKAnhs/3+MpYXHvxUQrc9f4N7wgkSm4+sg5Y8L2oKaHr2kiWEDt+JjVo1ftj5qvxLSKyOwNMrEqgadrsCgO9lpMy3ChuEreIL+SXROj4xWYoODOHk6fE0n6RK+iDJKiH+d6gDKfjbb8LkwR1Nhrailzj0B6FnOSew4HwRmckzXUboWcfkXAgMBAAECggEADBxn3ML96D6DC6/K4O7If+qD8IqR/SBU4GhTwLCq3JSh6OSdYr1ClDb3B19+EbpgdL4XNuA1AFbbikW1EIDxITH+kYKuW0u+s+bB3qo8SGeQDFKPrctuA6RQu5rGsxbe+krWTAf3H6NZClXroAt2oJZTjn2BSqyVcPS1ATx5Yh50hC6wA9HA9Y2Mxi//zrOoDYwPSgdfyq9oBFz6+s6h1MbFkYFPRtDWXgHj2vhzK5m6XOWBUnyCree5dYUGVnxOlUBQNJ4Bauax68cLpg5CYGSNPQks1PX3IXaHTvfAdUj/l6Ke+BWxEsdmQPOlbAhO5tY0MQmT19CKnql/6DnW0QKBgQDjeSPAmozbp0xjr8S9zW69QG+3xZrGo+S3wqaxM3oUJlscRt1lrf46zmRVsDmm8zGlCJpI+uJ3Leb0oLr47B3NCP6q/LBxl1XPXFV5S/JkZo1ZL90X6vCHTp93/zVtpd4yVTjgQB61Jxf5tpla8tFwPVuSxtZ0ZSi4j/xZfOiWZQKBgQDfM6t2+acbpZsZUF0/y/xzv779XKgwB820FXRApzOX33+tqGENllVMvHMu8MvddGpEJLi68ycMAr7digF9qhp1I3EtyrMbejFeqF2tIs9UPg+ZrCd+l4oZ0C2N22g70wlhfsXA+Axl6CnlKCT+vLdIziRFyfU4R6CtBXBV3uTrywKBgQCSFI6QNvA0c1jMP+mB1nbCVKoqA12lKUVNeVShQaSpYgRqwVuW28kDLN4kZTpw64a7LC4gpfVfgfvqp3nLN57fuGILnqEVIZG6y9ocPliYf39QgjtjC76Rtj0Uy7EdDEMIYdBXuvW9cjCkbc5IKN21TcIMHWNFdl1TQSxWr6+SPQKBgQCVeXPdtGkd0bThqfkYzVHebk3IPPIBYGh4rllxJsgdcDaAJKACSmgLgLSeffH494pm4jS4NjgzCe+qS06eSnl3cunLodB6mUVQv+4kEYjJQNqPrkOwumloygqH0qSmU7kXip+CkFs1L9pGtbC4y8buweZ2uj43l3haBqdpSmECKwKBgGRttTWOTu36kgcIN9zvJ5I2O74uHN3PzAL7rb7Ved+INQZuF0E+JzsXPq1NQi07c91U88oWFOQcht9fqz2oirLVoCD4/Fb3dBMU3zvj6ZOl47tpI7ncQvfeb7WQFa/z97PVyd4k+q3FDRGhMSOwwm39ZSVQvO8U0P5h24n/1XTf
-    issuer: http://security.api
-
 server:
-    baseUrl: http://localhost:1
-    port: 8081
+    baseUrl: http://localhost
+    port: 8082
     compression.enabled: true
     compression.mime-types: application/json,application/xml,text/html,text/xml,text/plain
     error:
@@ -20,48 +16,23 @@ actuator:
 client:
     password: password
     username: clientId
-spring:
-    datasource:
-        password: root
-        platform: org.hibernate.dialect.MySQL5Dialect
-        url: jdbc:mysql://localhost:3306/quartz_demo_db
-        username: root
-    jpa:
-        hibernate:
-            ddl-auto: update
-            naming:
-                implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
-                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-
-        properties:
-            hibernate.enable_lazy_load_no_trans: true
-        open-in-view: false
-        show-sql: true
-    quartz:
-        jdbc:
-            initialize-schema: never
-        job-store-type: jdbc
-        properties:
-            org:
-                quartz:
-                    jobStore:
-                        class: org.quartz.impl.jdbcjobstore.JobStoreTX
-                        driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-                        isClustered: true
-                        misfireThreshold: 60000
-                        tablePrefix: QRTZ_
-                        useProperties: true
-                    plugin:
-                        shutdownHook:
-                            class: org.quartz.plugins.management.ShutdownHookPlugin
-                            cleanShutdown: true
-                    scheduler:
-                        instanceId: AUTO
-                        instanceIdGenerator:
-                            class: com.sma.quartz.component.CustomQuartzInstanceIdGenerator
-                        instanceName: quartz-app
-                    threadPool:
-                        threadCount: 20
+#spring:
+#    datasource:
+#        password: root
+#        platform: org.hibernate.dialect.MySQL5Dialect
+#        url: jdbc:mysql://localhost:3306/quartz_demo_db
+#        username: root
+#    jpa:
+#        hibernate:
+#            ddl-auto: update
+#            naming:
+#                implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+#                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+#
+#        properties:
+#            hibernate.enable_lazy_load_no_trans: true
+#        open-in-view: false
+#        show-sql: true
 
 json:
     errormsg: #Sorry, something went wrong. Please try again later
