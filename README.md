@@ -1,5 +1,5 @@
 # Getting Started
-This project is about Springboot with Quartz Integration
+This project is about Springboot with JTW security Integration
 
 # Technologies
     - Java version 1.8
@@ -12,25 +12,20 @@ This project is about Springboot with Quartz Integration
 
 # Features:
 
-- create new job running with bash script behind
-- create new job with java code and cron job expression
-- create new job with Simple repeating time
-- manage public holiday with CRUD action
+- login jwt api
+- create user (normal)
+- create admin user
 
-   ~~~~
-   create : POST /api/public-holiday/v1
-   update : POST /api/public-holiday/v1/{id}
-   getDetail: GEt /api/public-holiday/v1/{id}
-   delete: DELETE /api/public-holiday/v1/{id}
-   getPage: GET /api/public-holiday/v1?limit={limit}&offset=${offset}
-   ~~~~
 
 
 # Demo
 ````
-loging : http://localhost:8081/login.html  (admin/abc@2019)
+login : http://localhost:8080/login.html  (admin/abc@2019)
 
-CRUD actions : http://localhost:8081/holiday.html
+
+create normal user :
+
+create admin user:
 
 ````
  

@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,7 +33,6 @@ public class TokenController {
         this.tokenService = tokenService;
     }
 
-   // @SwaggerPublicApi
     @ApiOperation(value = "request a JWT access token")
     @PostMapping(value = "/oauth2/token", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public AccessToken getAccessToken(@ApiParam(value = "must be set to client_credentials", required = true) @RequestParam("grant_type") String grantType, @ApiParam(value = "the client identifier issued to the client", required = true) @RequestParam("client_id") String clientId, @ApiParam(value = "the client secret", required = true) @RequestParam("client_secret") String clientSecret) {
@@ -44,5 +45,10 @@ public class TokenController {
         } catch (Exception e) {
             throw new AuthenticationBusinessException("The username or password is not correct");
         }
+    }
+
+    @GetMapping(value = "/.well-known/jwks.json", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<String> getJwksConfiguration() {
+        return ResponseEntity.ok(tokenService.getJwks());
     }
 }

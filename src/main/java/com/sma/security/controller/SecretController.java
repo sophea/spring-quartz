@@ -20,14 +20,27 @@ public class SecretController {
 
     @Autowired
     private ClientRepository clientRepository;
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public Secret createPasswordAndHash() {
-        final Secret responseBody = new Secret();
-        return responseBody;
+
+
+    @PostMapping(value = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Client createNormalUser(@RequestParam String clientId,
+                                 @RequestParam String name ,
+                                 @RequestParam String secret) {
+
+        final Client client = new Client();
+
+        client.setId(clientId);
+        client.setName(name);
+        client.setPasswordHash(new Secret(secret).getHash());
+        client.setClientRoles(Arrays.asList(roleUser()));
+        clientRepository.save(client);
+        return client;
     }
 
-    @PostMapping(value = "/client", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Client createClientId(@RequestParam String clientId, @RequestParam String name ,@RequestParam String secret ) {
+    @PostMapping(value = "/adminuser", produces = MediaType.APPLICATION_JSON_VALUE)
+    public Client createAdminUser(@RequestParam String clientId,
+                                 @RequestParam String name ,
+                                 @RequestParam String secret) {
 
         final Client client = new Client();
 
@@ -36,13 +49,7 @@ public class SecretController {
         client.setPasswordHash(new Secret(secret).getHash());
         client.setClientRoles(Arrays.asList(roleUser(), roleAdminUser()));
         clientRepository.save(client);
-        //clientRepository.save(client);
         return client;
-    }
-
-    @GetMapping("/test")
-    public String test() {
-        return "TESTING";
     }
 
     private ClientRole roleUser() {

@@ -1,6 +1,7 @@
 package com.sma.security.service;
 
 import com.sma.common.tools.exceptions.ItemNotFoundBusinessException;
+import com.sma.security.config.SecurityRoles;
 import com.sma.security.entity.Client;
 import com.sma.security.entity.Secret;
 import com.sma.security.repository.ClientRepository;
@@ -8,6 +9,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Arrays;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -26,5 +30,9 @@ public class ClientService {
 
         return clientRepository.findById(clientId).filter(client -> new Secret(clientSecret)
                 .isMatched(client.getPasswordHash())).orElseThrow(() -> new ItemNotFoundBusinessException("Client id and client secret do not match.", 406));
+    }
+
+    public static List<String> getAllRoles() {
+        return Arrays.asList(SecurityRoles.ROLE_USER, SecurityRoles.ROLE_BACKOFFICE_ADMIN);
     }
 }
