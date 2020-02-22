@@ -47,7 +47,7 @@ public class SecretController {
 
     private ClientRole roleUser() {
         final ClientRole role = new ClientRole();
-        role.setRole(SecurityRoles.ROLE_MOBILE_CLIENT);
+        role.setRole(SecurityRoles.ROLE_USER);
         return role;
     }
 
