@@ -683,6 +683,7 @@ function addLeftMenu() {
 function storeToken(token) {
     localStorage.setItem('token', token);
 }
+
 function getToken() {
     return this.localStorage.getItem('token');
 }

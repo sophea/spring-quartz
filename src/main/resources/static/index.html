@@ -125,8 +125,9 @@
                 success 	: function(data, textStatus, jqXHR) {
                   //  $("#createNewJobTypeResponse").text(data);
                     //TODOs : store access token
+                    console.log(data.accessToken);
                     storeToken(data.accessToken);
-                    window.location.href = "holiday.html";
+                    window.location.href = "dashboard.html";
                 },
                 complete : function(jqXHR, textStatus) {
                     // $("#createNewJobResponseCode").text(jqXHR.status + " " + jqXHR.statusText);

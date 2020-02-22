@@ -5,8 +5,8 @@ jwt:
     expiry-time-in-seconds: 14440
 
 server:
-    baseUrl: http://localhost:1
-    port: 8081
+    baseUrl: http://localhost:8080
+    port: 8080
     compression.enabled: true
     compression.mime-types: application/json,application/xml,text/html,text/xml,text/plain
     error:
@@ -39,31 +39,6 @@ spring:
             hibernate.enable_lazy_load_no_trans: true
         open-in-view: false
         show-sql: true
-    quartz:
-        jdbc:
-            initialize-schema: never
-        job-store-type: jdbc
-        properties:
-            org:
-                quartz:
-                    jobStore:
-                        class: org.quartz.impl.jdbcjobstore.JobStoreTX
-                        driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
-                        isClustered: true
-                        misfireThreshold: 60000
-                        tablePrefix: QRTZ_
-                        useProperties: true
-                    plugin:
-                        shutdownHook:
-                            class: org.quartz.plugins.management.ShutdownHookPlugin
-                            cleanShutdown: true
-                    scheduler:
-                        instanceId: AUTO
-                        instanceIdGenerator:
-                            class: com.sma.quartz.component.CustomQuartzInstanceIdGenerator
-                        instanceName: quartz-app
-                    threadPool:
-                        threadCount: 20
 
 json:
     errormsg: #Sorry, something went wrong. Please try again later
