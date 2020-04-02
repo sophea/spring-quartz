@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 3 | Simple Tables</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+
+  <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+  <!--<link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">-->
+
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+  <div class="modal fade show" id="modal-default" style="display: none;" aria-modal="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Default Modal</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="message">One fine body…</p>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <!--<button type="button" class="btn btn-primary">Save changes</button>-->
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title" id="mainTitle">Crate Entity</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form role="form" id="createForm">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Email address</label>
+                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                </div>
+                <div class="form-group">
+                  <label for="exampleInputFile">File input</label>
+                  <div class="input-group">
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="exampleInputFile">
+                      <label class="custom-file-label" for="exampleInputFile">Choose file</label>
+                    </div>
+                    <div class="input-group-append">
+                      <span class="input-group-text" id="">Upload</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group">
+                  <label>Text</label>
+                  <input type="text" class="form-control" placeholder="Enter ...">
+                </div>
+                <!-- select -->
+                <div class="form-group">
+                  <div class="form-group">
+                    <label>Select</label>
+                    <select class="form-control">
+                      <option>option 1</option>
+                      <option>option 2</option>
+                      <option>option 3</option>
+                      <option>option 4</option>
+                      <option>option 5</option>
+                    </select>
+                  </div>
+                </div>
+                <!--<div class="form-group">-->
+                  <!--<label>Textarea</label>-->
+                  <!--<textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                  <!--<div class="form-check">-->
+                    <!--<input class="form-check-input" type="radio" name="radio1">-->
+                    <!--<label class="form-check-label">Radio</label>-->
+                  <!--</div>-->
+                  <!--<div class="form-check">-->
+                    <!--<input class="form-check-input" type="radio" name="radio1" checked="">-->
+                    <!--<label class="form-check-label">Radio checked</label>-->
+                  <!--</div>-->
+                  <!--<div class="form-check">-->
+                    <!--<input class="form-check-input" type="radio" disabled="">-->
+                    <!--<label class="form-check-label">Radio disabled</label>-->
+                  <!--</div>-->
+                <!--</div>-->
+
+                <div class="form-check">
+                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                  <label class="form-check-label" for="exampleCheck1">Check me out</label>
+                </div>
+              </div>
+              <!-- /.card-body -->
+
+              <div class="card-footer">
+                <button class="btn btn-primary" id="createButton" onclick="crudCreateEntity();" >Create</button>
+                <button type="button" class="btn btn-default float-right" onclick="cancelAction();">Cancel</button>
+              </div>
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- wrapper -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+
+<!-- JQuery 1.9.1  -->
+<script type="text/javascript" src="js/jquery.1.9.1.min.js"></script>
+
+<!-- MomentJS  -->
+<script type="text/javascript" src="js/moment.2.13.0.min.js"></script>
+
+<!-- Bootstrap JS  -->
+<script type="text/javascript" src="js/bootstrap.3.3.6.min.js"></script>
+
+<!-- datetime picker  -->
+<!--<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>-->
+
+<!-- table sorter  -->
+<!--<script type="text/javascript" src="js/jquery.tablesorter.js" charset="UTF-8"></script>-->
+
+<script type="text/javascript">
+  $(document).ready(function() {
+    //  $('#httpCode').html("500");
+    //  $('#responseMessage').html("warnring");
+    // $('#warningModal').modal('show');
+
+  });
+  function cancelAction() {
+    $("#modal-default").modal('show');
+    $("#message").html("Action has been cancel");
+
+  }
+</script>
+</body>
+</html>
