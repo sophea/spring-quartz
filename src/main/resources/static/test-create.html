@@ -6,6 +6,10 @@
   <title>AdminLTE 3 | Simple Tables</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+  <!--<link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">-->
+
   <!-- Font Awesome -->
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <!-- Ionicons -->
@@ -16,35 +20,13 @@
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 
 
-  <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
-  <!--<link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">-->
 
 
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-  <div class="modal fade show" id="modal-default" style="display: none;" aria-modal="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Default Modal</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <p id="message">One fine body…</p>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <!--<button type="button" class="btn btn-primary">Save changes</button>-->
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
+
 
   <!-- Main content -->
   <section class="content">
@@ -59,75 +41,77 @@
             </div>
             <!-- /.card-header -->
             <!-- form start -->
-            <form role="form" id="createForm">
-              <div class="card-body">
-                <div class="form-group">
-                  <label for="exampleInputEmail1">Email address</label>
-                  <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputPassword1">Password</label>
-                  <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                </div>
-                <div class="form-group">
-                  <label for="exampleInputFile">File input</label>
-                  <div class="input-group">
-                    <div class="custom-file">
-                      <input type="file" class="custom-file-input" id="exampleInputFile">
-                      <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                    </div>
-                    <div class="input-group-append">
-                      <span class="input-group-text" id="">Upload</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label>Text</label>
-                  <input type="text" class="form-control" placeholder="Enter ...">
-                </div>
-                <!-- select -->
-                <div class="form-group">
-                  <div class="form-group">
-                    <label>Select</label>
-                    <select class="form-control">
-                      <option>option 1</option>
-                      <option>option 2</option>
-                      <option>option 3</option>
-                      <option>option 4</option>
-                      <option>option 5</option>
-                    </select>
-                  </div>
-                </div>
-                <!--<div class="form-group">-->
-                  <!--<label>Textarea</label>-->
-                  <!--<textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                  <!--<div class="form-check">-->
-                    <!--<input class="form-check-input" type="radio" name="radio1">-->
-                    <!--<label class="form-check-label">Radio</label>-->
-                  <!--</div>-->
-                  <!--<div class="form-check">-->
-                    <!--<input class="form-check-input" type="radio" name="radio1" checked="">-->
-                    <!--<label class="form-check-label">Radio checked</label>-->
-                  <!--</div>-->
-                  <!--<div class="form-check">-->
-                    <!--<input class="form-check-input" type="radio" disabled="">-->
-                    <!--<label class="form-check-label">Radio disabled</label>-->
-                  <!--</div>-->
-                <!--</div>-->
+            <form  id="createForm" action="javascript:void(0);">
+                  <div class="card-body">
+                    <div> <p class="alert-danger" id="errorMessage">Error</p></div>
+                    <fieldset id="createFieldset">
+                        <!--<div class="form-group">-->
+                          <!--<label for="exampleInputEmail1">Email address</label>-->
+                          <!--<input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                          <!--<label for="exampleInputPassword1">Password</label>-->
+                          <!--<input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                          <!--<label for="exampleInputFile">File input</label>-->
+                          <!--<div class="input-group">-->
+                            <!--<div class="custom-file">-->
+                              <!--<input type="file" class="custom-file-input" id="exampleInputFile">-->
+                              <!--<label class="custom-file-label" for="exampleInputFile">Choose file</label>-->
+                            <!--</div>-->
+                            <!--<div class="input-group-append">-->
+                              <!--<span class="input-group-text" id="">Upload</span>-->
+                            <!--</div>-->
+                          <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                          <!--<label>Text</label>-->
+                          <!--<input type="text" class="form-control" placeholder="Enter ...">-->
+                        <!--</div>-->
+                        <!--&lt;!&ndash; select &ndash;&gt;-->
+                          <!--<div class="form-group">-->
+                            <!--<label>Select</label>-->
+                            <!--<select class="form-control">-->
+                              <!--<option>option 1</option>-->
+                              <!--<option>option 2</option>-->
+                              <!--<option>option 3</option>-->
+                              <!--<option>option 4</option>-->
+                              <!--<option>option 5</option>-->
+                            <!--</select>-->
+                          <!--</div>-->
+                        <!--<div class="form-group">-->
+                          <!--<label>Textarea</label>-->
+                          <!--<textarea class="form-control" rows="3" placeholder="Enter ..."></textarea>-->
+                        <!--</div>-->
+                        <!--<div class="form-group">-->
+                          <!--<div class="form-check">-->
+                            <!--<input class="form-check-input" type="radio" name="radio1">-->
+                            <!--<label class="form-check-label">Radio</label>-->
+                          <!--</div>-->
+                          <!--<div class="form-check">-->
+                            <!--<input class="form-check-input" type="radio" name="radio1" checked="">-->
+                            <!--<label class="form-check-label">Radio checked</label>-->
+                          <!--</div>-->
+                          <!--<div class="form-check">-->
+                            <!--<input class="form-check-input" type="radio" disabled="">-->
+                            <!--<label class="form-check-label">Radio disabled</label>-->
+                          <!--</div>-->
+                        <!--</div>-->
 
-                <div class="form-check">
-                  <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                  <label class="form-check-label" for="exampleCheck1">Check me out</label>
-                </div>
-              </div>
-              <!-- /.card-body -->
+                        <!--<div class="form-check">-->
+                          <!--<input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+                          <!--<label class="form-check-label" for="exampleCheck1">Check me out</label>-->
+                        <!--</div>-->
+                    </fieldset>
+                  </div>
+                  <!-- /.card-body -->
 
-              <div class="card-footer">
-                <button class="btn btn-primary" id="createButton" onclick="crudCreateEntity();" >Create</button>
-                <button type="button" class="btn btn-default float-right" onclick="cancelAction();">Cancel</button>
-              </div>
+                  <div class="card-footer">
+                    <button class="btn btn-primary" id="createButton"  onclick="crudCreateEntity();">Create</button>
+                    <button type="button" class="btn btn-default float-right" onclick="cancelAction();">Cancel</button>
+                  </div>
+
             </form>
           </div>
           <!-- /.card -->
@@ -138,21 +122,81 @@
 
 </div><!-- wrapper -->
 
-<!-- jQuery -->
+
+
+
+<!-- success Modal -->
+<div id="successModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h4 class="modal-title">Success</h4>
+      </div>
+      <div class="modal-body">
+        <span id="successText"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="btnSuccess" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">Open modal for @mdo</button>-->
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@fat">Open modal for @fat</button>-->
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" data-whatever="@getbootstrap">Open modal for @getbootstrap</button>-->
+
+<!--<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">-->
+  <!--<div class="modal-dialog" role="document">-->
+    <!--<div class="modal-content">-->
+      <!--<div class="modal-header">-->
+        <!--<h5 class="modal-title" id="exampleModalLabel">New message</h5>-->
+        <!--<button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+          <!--<span aria-hidden="true">&times;</span>-->
+        <!--</button>-->
+      <!--</div>-->
+      <!--<div class="modal-body">-->
+        <!--<form>-->
+          <!--<div class="form-group">-->
+            <!--<label for="email-text" class="col-form-label">Email:</label>-->
+            <!--<input type="email" class="form-control" id="email-text"></input>-->
+          <!--</div>-->
+
+          <!--<div class="form-group">-->
+            <!--<label for="recipient-name" class="col-form-label">Recipient:</label>-->
+            <!--<input type="text" class="form-control" id="recipient-name">-->
+          <!--</div>-->
+          <!--<div class="form-group">-->
+            <!--<label for="message-text" class="col-form-label">Message:</label>-->
+            <!--<textarea class="form-control" id="message-text"></textarea>-->
+          <!--</div>-->
+        <!--</form>-->
+      <!--</div>-->
+      <!--<div class="modal-footer">-->
+        <!--<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>-->
+        <!--<button type="button" class="btn btn-primary">Send message</button>-->
+      <!--</div>-->
+    <!--</div>-->
+  <!--</div>-->
+<!--</div>-->
+
+
+<<!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
 <!-- AdminLTE App -->
 <script src="dist/js/adminlte.min.js"></script>
 
-<!-- JQuery 1.9.1  -->
-<script type="text/javascript" src="js/jquery.1.9.1.min.js"></script>
+<!--&lt;!&ndash; JQuery 1.9.1  &ndash;&gt;-->
+<!--<script type="text/javascript" src="js/jquery.1.9.1.min.js"></script>-->
 
-<!-- MomentJS  -->
-<script type="text/javascript" src="js/moment.2.13.0.min.js"></script>
+<!--&lt;!&ndash; MomentJS  &ndash;&gt;-->
+<!--<script type="text/javascript" src="js/moment.2.13.0.min.js"></script>-->
 
-<!-- Bootstrap JS  -->
-<script type="text/javascript" src="js/bootstrap.3.3.6.min.js"></script>
+<!--&lt;!&ndash; Bootstrap JS  &ndash;&gt;-->
+<!--<script type="text/javascript" src="js/bootstrap.3.3.6.min.js"></script>-->
 
 <!-- datetime picker  -->
 <!--<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>-->
@@ -161,17 +205,254 @@
 <!--<script type="text/javascript" src="js/jquery.tablesorter.js" charset="UTF-8"></script>-->
 
 <script type="text/javascript">
+  var apiUrl = "/api/public-holiday/";
   $(document).ready(function() {
+    $("#errorMessage").hide();
     //  $('#httpCode').html("500");
     //  $('#responseMessage').html("warnring");
     // $('#warningModal').modal('show');
+    createNewEntity();
 
   });
+
+  $("#createForm").submit(function( event ) {
+    event.preventDefault();
+  });
   function cancelAction() {
-    $("#modal-default").modal('show');
-    $("#message").html("Action has been cancel");
+   // $("#infoMessage").html("Action has been cancel");
+   // $("#infoModal").modal('show');
 
   }
+
+
+  $('#exampleModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('.modal-title').text('New message to ' + recipient)
+    //modal.find('.modal-body input').val(recipient)
+  });
+
+
+
+  /**
+   * API for create
+   * Method: POST
+   * Content-Type: application/json
+   * */
+  function crudCreate(body, successFunction) {
+    $.ajax({
+      url: apiUrl + "v1/json",
+      type: 'POST',
+      contentType: "application/json",
+      data: JSON.stringify(body),
+      dataType: 'json',
+      statusCode: {
+        400: function(data){
+          var responseObject = JSON.parse(data.responseText);
+         // $('#httpCode').html(responseObject.httpCode);
+          //$('#responseMessage').html(responseObject.message);
+          //$('#warningModal').modal('show');
+          //alert(responseObject.message);
+          $("#errorMessage").html("Failed : " + responseObject.status + ":" + responseObject.message)
+          $("#errorMessage").show();
+        },
+        500: function(data){
+         // $('#httpCode').html("500");
+         // $('#responseMessage').html("Something went wrong!");
+          //$('#warningModal').modal('show');
+          var responseObject = JSON.parse(data.responseText);
+         // alert(responseObject.message);
+          $("#errorMessage").html("Failed : " + responseObject.status + ":  Something went wrong!" )
+          $("#errorMessage").show();
+        }
+      },
+      success :successFunction
+    });
+  }
+  // invoke create API
+  function crudCreateEntity() {
+    var body = crudUpsertEntity("#create_");
+    delete body.updatedDate
+    delete body.createdDate
+
+    crudCreate(body, function(data, statusText, jqXHR) {
+      //$('#successText').html("Data create successfully.")
+      //$('#successModal').modal('show');
+      document.getElementById("createForm").reset();
+     // alert("Data create successfully.");
+        $('#successText').html("new record created successfully.")
+        $('#successModal').modal('show');
+
+    });
+  }
+
+  // collect data by id
+  function crudUpsertEntity(idPrefix) {
+    var body = {};
+    var schema = $("#createForm").data("schema");
+    var val;
+
+    // add primary key?
+    if ("#update_" == idPrefix || "text" == schema.primaryKeyType) {
+      val = $(idPrefix + schema.primaryKeyName).val();
+      if (val && 0 < val.length) {
+        body[schema.primaryKeyName] = val;
+      }
+    }
+
+
+    // map properties
+    $.each(schema.columns, function(index, field) {
+
+      var key = field.name;
+      var item = field.type;
+
+      if ("#create_" == idPrefix && crudIsAuditField(key)) {
+        // do not map to body when creating
+      }
+      else {
+      //  if(item == "datetime") {
+       //   body[key] = new moment(new Date($(idPrefix + key).val())).format("YYYY-MM-DDTHH:mm:ssZZ");
+        //}
+        //else
+        if(item == "Collection") {
+          body[key] = crudUpsertCollection(idPrefix, key);
+        }
+        else {
+          body[key] = $(idPrefix + key).val();
+        }
+      }
+    });
+    return body;
+  }
+
+  /**
+   * API create new record of a entity
+   *
+   * */
+
+  function createNewEntity() {
+
+    $.ajax({
+      url: apiUrl + "v1/schema",
+      type: "GET",
+      dataType: "json",
+      success : function(data, statusText, jqXHR) {
+
+        $("#createForm").data("schema", data);
+
+        $.each(data.columns, function (index, field) {
+          var key = field.name;
+          var item = field.type;
+          $("#mainTitle").text("Create Record for table " + data.tableName);
+
+          var divId = "div_" + key;
+          $("#createFieldset").append("<div id='" + divId + "' class='form-group'>");
+          // generate Create form
+          if (!crudIsAuditField(key) && !(key == 'createdDate' || key == 'updatedDate')) {
+
+
+            if (item == "boolean") {
+              $("#" + divId).append("<label for='create_" + key + "'>" + key + "</label>" +
+                      "<select class='form-control' id='create_" + key + "' name='" + key + "'><option value=''>please select</option><option value='true'>True</option><option value='false'>False</option></select>");
+            } else if (item == "long") {
+              $("#" + divId).append("<label for='create_" + key + "'>" + key + "</label>" +
+                      "<input type='text' id='create_" + key + "' name='" + key + "' class='longOnly form-control'/>");
+            } else if (item == "number") {
+              $("#" + divId).append("<label for='create_" + key + "'>" + key + "</label>" +
+                      "<input type='text' id='create_" + key + "' name='" + key + "' class='numberOnly form-control'/>");
+            } else if (item == "datetime") {
+              $("#" + divId).append("<label for='create_" + key + "'>" + key + "</label>" +
+                      "<div class='input-group date form_datetime col-md-12' data-date-format='dd/mm/yyyy, HH:ii:ss p'> " +
+                      "<input class='form-control' size='16' type='text' value='' id='create_" + key + "' name='" + key + "'>" +
+                      "<span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span></div>");
+            } else if (item == "Collection") {
+              $("#" + divId).append("<label for='create_" + key + "'>" + key + "</label>" +
+                      "<div class='row collectionBox_" + key + "' id='create_" + key + "' name='" + key + "'><div class='col-xs-11'><input type='text' class='form-control first margin-bottom-5 create_collectionItem_" + key + "' placeholder='collection item'/>" +
+                      "<button class='btn btn-default btnRemoveItem'><span class='glyphicon glyphicon-minus'></span></button></div>" +
+                      "<div class='col-xs-1'><button class='btn btn-default btnAddCollection' prefix='create_' value='" + key + "'><span class='glyphicon glyphicon-plus'></span></button></div></div>");
+            } else if (item == "select") {
+              var option = "<option value=''>please select</option>";
+              $.each(field.data, function (index, opt) {
+                option = option + "<option value='" + opt.id + "'>" + opt.label + "</option>";
+              });
+              var select = "<select class='form-control' id='create_" + key + "' name='" + key + "'>" + option + "</select>";
+              $("#" + divId).append("<label for='create_" + key + "'>" + key + "</label>" + select);
+            } else {
+              $("#" + divId).append("<label for='create_" + key + "'>" + key + "</label>" +
+                      ('text' != item ?
+                              "<textarea id='create_" + key + "' name='" + key + "' class='form-control'></textarea>" :
+                              "<input id='create_" + key + "' name='" + key + "' type='" + item + "' class='form-control'/>")
+                      + "");
+            }
+          }
+        });
+
+      }
+
+      });
+  }
+
+  // fields for skip
+  function crudIsAuditField(key) {
+    //"createdDate" == key || "updatedDate" == key
+    return "createdBy" == key ||  "updatedBy" == key  ||  "version" == key || "mainLocation" == key;
+  }
+
+
+
+
+  function populateSelectValue(value, list) {
+    $.each(list, function (index, opt) {
+      if (value == opt.id) {
+        value = opt.label;
+        return;
+
+      }
+    });
+    return value;
+  }
+
+
+  // allow only number
+  $(document).on('keypress', '.longOnly', function(event){
+    var x = event.which || event.keyCode;
+    if((x<48 || x>57) && x!=8 && x!=37 && x!=39){
+      return false;
+    }
+  });
+
+  // allow decimal number
+  $(document).on('keypress', '.numberOnly', function(event){
+    var x = event.which || event.keyCode;
+    if((x<48 || x>57) && x!=8 && x!=37 && x!=39 && x!=46){
+      return false;
+    }
+    if(x==46){
+      var value = $(this).val();
+      if(value.indexOf(".") != -1){
+        return false;
+      }
+    }
+  });
+
+  // **** Sticky scroll
+  function sticky_relocate() {
+    var window_top = $(window).scrollTop();
+    if (window_top > 235) {
+      $('#sticky').addClass('stick');
+    } else {
+      $('#sticky').removeClass('container stick');
+    }
+  }
+  $(function() {
+    $(window).scroll(sticky_relocate);
+    sticky_relocate();
+  });
+
 </script>
 </body>
 </html>

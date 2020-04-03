@@ -31,5 +31,10 @@ public class Field implements Serializable {
         this.type = type;
         this.defaultValue = defaultValue;
     }
+    public Field(String name, String type, List<Data> data) {
+        this.name = name;
+        this.type = type;
+        this.data = data;
+    }
 
 }

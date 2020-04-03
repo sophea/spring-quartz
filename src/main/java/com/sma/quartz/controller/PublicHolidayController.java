@@ -2,6 +2,7 @@ package com.sma.quartz.controller;
 
 import com.sma.common.tools.exceptions.ItemNotFoundBusinessException;
 import com.sma.common.tools.response.ResponseList;
+import com.sma.quartz.entity.Data;
 import com.sma.quartz.entity.Field;
 import com.sma.quartz.entity.PublicHoliday;
 import com.sma.quartz.service.PublicHolidayService;
@@ -180,9 +181,13 @@ public class PublicHolidayController {
         columns.add(new Field("dateValue", "text"));
         columns.add(new Field("createdDate", "datetime"));
         columns.add(new Field("updatedDate", "datetime"));
+
+        columns.add(new Field("numberField", "number"));
+        columns.add(new Field("longValue", "long"));
+        columns.add(new Field("comingSoon", "boolean"));
      //   columns.add(new Field("xxxx", "text", "defaultValue"));
         // test
-        // columns.add(new Field("gender", "select", Arrays.asList(new Data("1", "Female"), new Data("2", "Male"))));
+         columns.add(new Field("gender", "select", Arrays.asList(new Data("1", "Female"), new Data("2", "Male"))));
         /*
         final Map<String, String> columns = new HashMap<>();
         columns.put("name", "text");
