@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 3 | Simple Tables</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!--<link href="css/bootstrap.min.css" rel="stylesheet">-->
+  <!--<link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">-->
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="dist/css/adminlte.min.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+
+
+
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+
+
+  <!-- Main content -->
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <!-- left column -->
+        <div class="col-md-12">
+          <!-- general form elements -->
+          <div class="card card-primary">
+            <div class="card-header">
+              <h3 class="card-title" id="mainTitle">Edit Entity</h3>
+            </div>
+            <!-- /.card-header -->
+            <!-- form start -->
+            <form  id="editForm" action="javascript:void(0);">
+                  <div class="card-body">
+                    <div> <p class="alert-danger" id="errorMessage">Error</p></div>
+                    <fieldset id="editFieldset">
+     
+                    </fieldset>
+                  </div>
+                  <!-- /.card-body -->
+
+                  <div class="card-footer">
+                    <button class="btn btn-primary" id="createButton"  onclick="updateEntity();">Update</button>
+                    <button type="button" class="btn btn-default float-right" onclick="cancelAction();">Cancel</button>
+                  </div>
+
+            </form>
+          </div>
+          <!-- /.card -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- wrapper -->
+
+
+
+
+<!-- success Modal -->
+<div id="successModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-sm">
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header bg-primary">
+        <h4 class="modal-title">Success</h4>
+      </div>
+      <div class="modal-body">
+        <span id="successText"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" id="btnSuccess" data-dismiss="modal">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+
+
+<script type="text/javascript">
+  var apiUrl = "/api/public-holiday/";
+  var updateApiUrl = "";
+  $(document).ready(function() {
+    $("#errorMessage").hide();
+
+    editSchema(25);
+
+  });
+
+  /**
+   * API edit entity schema
+   *
+   * */
+
+  function editSchema(id) {
+
+    $.ajax({
+      url: apiUrl + "v1/edit/" + id + "/schema",
+      type: "GET",
+      dataType: "json",
+      success : function(data, statusText, jqXHR) {
+        updateApiUrl = data.url;
+        $("#editForm").data("schema", data);
+
+        $.each(data.columns, function (index, field) {
+          var key = field.name;
+          var item = field.type;
+          var value = field.defaultValue;
+          var readonly = field.readOnly == true ? " readonly " : " ";
+          $("#mainTitle").text("Update Record for table " + data.tableName);
+
+          var divId = "div_" + key;
+          $("#editFieldset").append("<div id='" + divId + "' class='form-group'>");
+          // generate edit form
+          if (!crudIsAuditField(key)) {
+
+
+            if (item == "boolean") {
+              $("#" + divId).append("<label for='edit_" + key + "'>" + key + "</label>" +
+                      "<select "+ readonly +" class='form-control' id='edit_" + key + "' name='" + key + "'><option value=''>please select</option><option value='true'>True</option><option value='false'>False</option></select>");
+            } else if (item == "long") {
+              $("#" + divId).append("<label for='edit_" + key + "'>" + key + "</label>" +
+                      "<input "+ readonly +" type='text' id='edit_" + key + "' name='" + key + "' class='longOnly form-control' value ='" + value + "'/>");
+            } else if (item == "number") {
+              $("#" + divId).append("<label for='edit_" + key + "'>" + key + "</label>" +
+                      "<input "+ readonly +" type='text' id='edit_" + key + "' name='" + key + "' class='numberOnly form-control' value ='" + value + "'/>");
+            } else if (item == "datetime") {
+              $("#" + divId).append("<label for='edit_" + key + "'>" + key + "</label>" +
+                      "<div class='input-group date form_datetime col-md-12' data-date-format='dd/mm/yyyy, HH:ii:ss p'> " +
+                      "<input  "+ readonly +" class='form-control' size='16' type='text' value ='" + value + "' id='edit_" + key + "' name='" + key + "'>" +
+                      "<span class='input-group-addon'><span class='glyphicon glyphicon-calendar'></span></span></div>");
+            } else if (item == "Collection") {
+              $("#" + divId).append("<label for='edit_" + key + "'>" + key + "</label>" +
+                      "<div class='row collectionBox_" + key + "' id='edit_" + key + "' name='" + key + "'><div class='col-xs-11'><input type='text' class='form-control first margin-bottom-5 edit_collectionItem_" + key + "' placeholder='collection item'/>" +
+                      "<button class='btn btn-default btnRemoveItem'><span class='glyphicon glyphicon-minus'></span></button></div>" +
+                      "<div "+ readonly +" class='col-xs-1'><button class='btn btn-default btnAddCollection' prefix='edit_' value='" + key + "'><span class='glyphicon glyphicon-plus'></span></button></div></div>");
+            } else if (item == "select") {
+              var option = "<option value=''>please select</option>";
+              $.each(field.data, function (index, opt) {
+                var selected = ""
+                if (opt.id == value) {
+                  selected = " selected ";
+                }
+                option = option + "<option " + selected +" value='" + opt.id + "'>" + opt.label + "</option>";
+              });
+              var select = "<select "+ readonly +" class='form-control' id='edit_" + key + "' name='" + key + "'>" + option + "</select>";
+              $("#" + divId).append("<label for='edit_" + key + "'>" + key + "</label>" + select);
+            } else {
+
+              $("#" + divId).append("<label for='edit_" + key + "'>" + key + "</label>" +
+                      ('text' != item ?
+                              "<textarea "+ readonly +" id='edit_" + key + "' name='" + key + "' class='form-control' value ='" + value + "'></textarea>" :
+                              "<input  "+ readonly +" id='edit_" + key + "' name='" + key + "' type='" + item + "'  value ='" + value + "' class='form-control'/>")
+                      + "");
+            }
+
+            // if ("text" == item) {
+            //   $("#edit" + key).text(value);
+            // } else {
+            //   $("#edit_" + key).value(value);
+            // }
+            //
+            // $("#edit" + key).attr('readonly', readonly);
+
+          }
+        });
+
+      }
+
+    });
+  }
+
+  $("#editForm").submit(function( event ) {
+    event.preventDefault();
+  });
+
+  function cancelAction() {
+   // $("#infoMessage").html("Action has been cancel");
+   // $("#infoModal").modal('show');
+
+  }
+
+
+  $('#exampleModal').on('show.bs.modal', function (event) {
+    var button = $(event.relatedTarget) // Button that triggered the modal
+    var recipient = button.data('whatever') // Extract info from data-* attributes
+    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+    var modal = $(this)
+    modal.find('.modal-title').text('New message to ' + recipient)
+    //modal.find('.modal-body input').val(recipient)
+  });
+
+
+
+  /**
+   * API for create
+   * Method: POST
+   * Content-Type: application/json
+   * */
+  function crudCreate(body, successFunction) {
+    alert(" updated " + updateApiUrl);
+    $.ajax({
+      url: updateApiUrl,
+      type: 'POST',
+      contentType: "application/json",
+      data: JSON.stringify(body),
+      dataType: 'json',
+      statusCode: {
+        400: function(data){
+          var responseObject = JSON.parse(data.responseText);
+         // $('#httpCode').html(responseObject.httpCode);
+          //$('#responseMessage').html(responseObject.message);
+          //$('#warningModal').modal('show');
+          //alert(responseObject.message);
+          $("#errorMessage").html("Failed : " + responseObject.status + ":" + responseObject.message)
+          $("#errorMessage").show();
+        },
+        500: function(data){
+         // $('#httpCode').html("500");
+         // $('#responseMessage').html("Something went wrong!");
+          //$('#warningModal').modal('show');
+          var responseObject = JSON.parse(data.responseText);
+         // alert(responseObject.message);
+          $("#errorMessage").html("Failed : " + responseObject.status + ":  Something went wrong!" )
+          $("#errorMessage").show();
+        }
+      },
+      success :successFunction
+    });
+  }
+  // invoke create API
+  function updateEntity() {
+    var body = crudUpsertEntity("#edit_");
+    delete body.updatedDate
+    delete body.createdDate
+
+    crudCreate(body, function(data, statusText, jqXHR) {
+      //$('#successText').html("Data create successfully.")
+      //$('#successModal').modal('show');
+      //document.getElementById("editForm").reset();
+     // alert("Data create successfully.");
+        $('#successText').html("edit record successfully.")
+        $('#successModal').modal('show');
+
+    });
+  }
+
+  // collect data by id
+  function crudUpsertEntity(idPrefix) {
+    var body = {};
+    var schema = $("#editForm").data("schema");
+    var val;
+
+    // add primary key?
+    if ("#update_" == idPrefix || "text" == schema.primaryKeyType) {
+      val = $(idPrefix + schema.primaryKeyName).val();
+      if (val && 0 < val.length) {
+        body[schema.primaryKeyName] = val;
+      }
+    }
+
+    // map properties
+    $.each(schema.columns, function(index, field) {
+
+      var key = field.name;
+      var item = field.type;
+
+      if ("#edit_" == idPrefix && crudIsAuditField(key)) {
+        // do not map to body when creating
+      }
+      else {
+      //  if(item == "datetime") {
+       //   body[key] = new moment(new Date($(idPrefix + key).val())).format("YYYY-MM-DDTHH:mm:ssZZ");
+        //}
+        //else
+        if(item == "Collection") {
+          body[key] = crudUpsertCollection(idPrefix, key);
+        }
+        else {
+          body[key] = $(idPrefix + key).val();
+        }
+      }
+    });
+    return body;
+  }
+
+
+
+  // fields for skip
+  function crudIsAuditField(key) {
+    //"createdDate" == key || "updatedDate" == key
+    return "createdBy" == key ||  "updatedBy" == key  ||  "version" == key || "mainLocation" == key;
+  }
+
+
+
+
+  function populateSelectValue(value, list) {
+    $.each(list, function (index, opt) {
+      if (value == opt.id) {
+        value = opt.label;
+        return;
+
+      }
+    });
+    return value;
+  }
+
+
+  // allow only number
+  $(document).on('keypress', '.longOnly', function(event){
+    var x = event.which || event.keyCode;
+    if((x<48 || x>57) && x!=8 && x!=37 && x!=39){
+      return false;
+    }
+  });
+
+  // allow decimal number
+  $(document).on('keypress', '.numberOnly', function(event){
+    var x = event.which || event.keyCode;
+    if((x<48 || x>57) && x!=8 && x!=37 && x!=39 && x!=46){
+      return false;
+    }
+    if(x==46){
+      var value = $(this).val();
+      if(value.indexOf(".") != -1){
+        return false;
+      }
+    }
+  });
+
+  // **** Sticky scroll
+  function sticky_relocate() {
+    var window_top = $(window).scrollTop();
+    if (window_top > 235) {
+      $('#sticky').addClass('stick');
+    } else {
+      $('#sticky').removeClass('container stick');
+    }
+  }
+  $(function() {
+    $(window).scroll(sticky_relocate);
+    sticky_relocate();
+  });
+
+</script>
+</body>
+</html>

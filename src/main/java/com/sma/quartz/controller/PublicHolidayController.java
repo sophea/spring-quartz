@@ -182,12 +182,12 @@ public class PublicHolidayController {
         columns.add(new Field("createdDate", "datetime"));
         columns.add(new Field("updatedDate", "datetime"));
 
-        columns.add(new Field("numberField", "number"));
-        columns.add(new Field("longValue", "long"));
-        columns.add(new Field("comingSoon", "boolean"));
+      //  columns.add(new Field("numberField", "number"));
+       // columns.add(new Field("longValue", "long"));
+       // columns.add(new Field("comingSoon", "boolean"));
      //   columns.add(new Field("xxxx", "text", "defaultValue"));
         // test
-         columns.add(new Field("gender", "select", Arrays.asList(new Data("1", "Female"), new Data("2", "Male"))));
+        // columns.add(new Field("gender", "select", Arrays.asList(new Data("1", "Female"), new Data("2", "Male"))));
         /*
         final Map<String, String> columns = new HashMap<>();
         columns.put("name", "text");
@@ -201,4 +201,107 @@ public class PublicHolidayController {
         return new ResponseEntity<>(body, HttpStatus.OK);
     }
 
+
+
+    /**
+     * schema api : Content-Type: application/x-www-form-urlencoded
+     * example json value
+     * <p>
+     * {
+     * action: "POST",
+     * url : "/api/test/v1/json",
+     * primaryKeyName: "id",
+     * tableName: "Country",
+     * primaryKeyType: "long",
+     * columns: {
+     * comingSoon: "boolean",
+     * flagImageUrl: "text",
+     * isoCode: "text",
+     * name: "text",
+     * state: "long",
+     * tcsUrl: "text",
+     * price : "number",
+     * createdDate: "datetime"
+     * }
+     * }
+     */
+    @RequestMapping(value = "v1/create/schema", method = {RequestMethod.GET}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Map<String, Object>> getCreateSchema() {
+        final Map<String, Object> body = new HashMap<String, Object>();
+
+
+        final List<Field> columns = new ArrayList<>();
+        columns.add(new Field("name", "text"));
+        columns.add(new Field("nameKh", "text"));
+        columns.add(new Field("dateValue", "text"));
+        columns.add(new Field("createdDate", "datetime"));
+        columns.add(new Field("updatedDate", "datetime"));
+
+        columns.add(new Field("numberField", "number"));
+        columns.add(new Field("longValue", "long"));
+        columns.add(new Field("comingSoon", "boolean"));
+        //   columns.add(new Field("xxxx", "text", "defaultValue"));
+        // test
+        columns.add(new Field("gender", "select", Arrays.asList(new Data("1", "Female"), new Data("2", "Male"))));
+        /*
+        final Map<String, String> columns = new HashMap<>();
+        columns.put("name", "text");
+        columns.put("type", "text");
+        */
+        body.put("columns", columns);
+        body.put("tableName", "public_holiday");
+        body.put("primaryKeyName", "id");
+        body.put("primaryKeyType", "long");
+        body.put("action", "POST");
+        body.put("url", "/api/public-holiday/v1/json");
+
+        return new ResponseEntity<>(body, HttpStatus.OK);
+    }
+
+    /**
+     * schema api : Content-Type: application/x-www-form-urlencoded
+     * example json value
+     * <p>
+     * {
+     * action: "POST",
+     * url : "/api/test/v1/json",
+     * primaryKeyName: "id",
+     * tableName: "Country",
+     * primaryKeyType: "long",
+     * columns: {
+     * comingSoon: "boolean",
+     * flagImageUrl: "text",
+     * isoCode: "text",
+     * name: "text",
+     * state: "long",
+     * tcsUrl: "text",
+     * price : "number",
+     * createdDate: "datetime"
+     * }
+     * }
+     */
+    @RequestMapping(value = "v1/edit/{id}/schema", method = {RequestMethod.GET}, produces = {MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<Map<String, Object>> getEditSchema(@PathVariable(value = "id") Long id) {
+        final Map<String, Object> body = new HashMap<String, Object>();
+
+        PublicHoliday domain = service.findById(id).get();
+
+        final List<Field> columns = new ArrayList<>();
+        columns.add(new Field("id", "text", String.format("%s", domain.getId()), true));
+        columns.add(new Field("name", "text", domain.getName()));
+        columns.add(new Field("nameKh", "text", domain.getNameKh()));
+        columns.add(new Field("dateValue", "text", domain.getDateValue().toString()));
+        columns.add(new Field("createdDate", "datetime", domain.getCreatedDate(), true));
+        columns.add(new Field("updatedDate", "datetime", domain.getCreatedDate(), true));
+
+
+        body.put("columns", columns);
+        body.put("tableName", "public_holiday");
+        body.put("primaryKeyName", "id");
+        body.put("primaryKeyType", "long");
+        body.put("action", "POST");
+        body.put("url", String.format("/api/public-holiday/v1/%s/json", id));
+
+        return new ResponseEntity<>(body, HttpStatus.OK);
+    }
 }

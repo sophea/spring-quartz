@@ -182,7 +182,7 @@
 <!--</div>-->
 
 
-<<!-- jQuery -->
+<!-- jQuery -->
 <script src="plugins/jquery/jquery.min.js"></script>
 <!-- Bootstrap 4 -->
 <script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
@@ -206,18 +206,20 @@
 
 <script type="text/javascript">
   var apiUrl = "/api/public-holiday/";
+  var createApiUrl = "";
   $(document).ready(function() {
     $("#errorMessage").hide();
     //  $('#httpCode').html("500");
     //  $('#responseMessage').html("warnring");
     // $('#warningModal').modal('show');
-    createNewEntity();
+    editEntity();
 
   });
 
   $("#createForm").submit(function( event ) {
     event.preventDefault();
   });
+
   function cancelAction() {
    // $("#infoMessage").html("Action has been cancel");
    // $("#infoModal").modal('show');
@@ -243,8 +245,9 @@
    * Content-Type: application/json
    * */
   function crudCreate(body, successFunction) {
+    alert(" create " + createApiUrl);
     $.ajax({
-      url: apiUrl + "v1/json",
+      url: createApiUrl,
       type: 'POST',
       contentType: "application/json",
       data: JSON.stringify(body),
@@ -303,7 +306,6 @@
       }
     }
 
-
     // map properties
     $.each(schema.columns, function(index, field) {
 
@@ -330,18 +332,18 @@
   }
 
   /**
-   * API create new record of a entity
+   * API create new record of a entity schema
    *
    * */
 
-  function createNewEntity() {
+  function editEntity() {
 
     $.ajax({
-      url: apiUrl + "v1/schema",
+      url: apiUrl + "v1/create/schema",
       type: "GET",
       dataType: "json",
       success : function(data, statusText, jqXHR) {
-
+        createApiUrl = data.url;
         $("#createForm").data("schema", data);
 
         $.each(data.columns, function (index, field) {
