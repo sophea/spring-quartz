@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 3 | Simple Tables</title>
+
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+  <!-- <link href="css/bootstrap.3.3.6.min.css" rel="stylesheet" media="screen"> -->
+  <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
+
+
+</head>
+<body class="hold-transition sidebar-mini layout-fixed">
+<div class="wrapper">
+
+    <!-- Main content -->
+    <section class="content">
+
+        <ul class="nav nav-tabs">
+          <li id="tab-home" class="active"><a data-toggle="tab" href="#home" id="tableName"></a></li>
+        </ul>
+
+        <div class="tab-content">
+          <div id="create-entity"/>
+          <!-- Tab Home -->
+          <div id="home"  class="tab-pane fade in active">
+
+            <div class="" id="sticky">
+              <div class="row" style="margin:0 !important;">
+                <div class="col-md-6">
+                  <h3 style="display:inline-block;">List all </h3> <a href="test-create.html">Create New</a>
+                </div>
+                <div class="col-md-3">
+                  <div class="input-group" style="margin-top:12px">
+                    <input type="text" class="form-control" id="searchBox" placeholder="Search id...">
+                    <span class="input-group-btn">
+			        <button class="btn btn-default" type="button" id="btnSearch">
+			        <span class="glyphicon glyphicon-search" style="padding: 3px 0;"></span>
+			        </button>
+			      </span>
+                  </div><!-- /input-group -->
+                </div>
+                <div class="col-md-2">
+                  <select class="form-control" style="margin-top:12px" id="perPage">
+
+                    <option value="10">10 rows per page</option>
+                    <option value="20" selected>20 rows per page</option>
+                    <option value="30">30 rows per page</option>
+                    <option value="50">50 rows per page</option>
+                    <option value="100">100 rows per page</option>
+                  </select>
+                </div>
+                <div class="col-md-1">
+                  <button style="float:right; margin-top:12px" class="btn btn-danger" id="btnDelete">
+                    <span class="glyphicon glyphicon-remove"></span> Delete</button>
+                </div>
+              </div>
+            </div>
+
+            <div id="sticky-anchor"></div>
+            <table class="table table-bordered table-hover tablesorter" id="sortTable">
+              <thead>
+              <tr id="tableHead" class="bg-info">
+
+              </tr>
+              </thead>
+              <tbody id="tableBody">
+              <!-- list CountrcreateFieldseties list body -->
+              </tbody>
+            </table>
+
+           <button id="btnLoadMore" onclick="crudLoadMore();">Load More</button>
+          </div>
+
+        </div>
+
+  </section>
+    <!-- /.content -->
+
+  <!-- confirm Modal -->
+  <div id="confirmModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header bg-danger">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Delete</h4>
+        </div>
+        <div class="modal-body">
+          <span>Are you sure you want to delete?</span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" id="deleteAPI">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  </div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="dist/js/adminlte.min.js"></script>
+
+<!-- JQuery 1.9.1  -->
+<script type="text/javascript" src="js/jquery.1.9.1.min.js"></script>
+
+<!-- MomentJS  -->
+<script type="text/javascript" src="js/moment.2.13.0.min.js"></script>
+
+<!-- Bootstrap JS  -->
+<script type="text/javascript" src="js/bootstrap.3.3.6.min.js"></script>
+
+<!-- datetime picker  -->
+<script type="text/javascript" src="js/bootstrap-datetimepicker.min.js" charset="UTF-8"></script>
+
+<!-- table sorter  -->
+<script type="text/javascript" src="js/jquery.tablesorter.js" charset="UTF-8"></script>
+
+<script type="text/javascript">
+    var apiUrl = "/api/public-holiday/";
+</script>
+<script type="text/javascript" src="mainAPI2.js"></script>
+</body>
+</html>

@@ -51,7 +51,7 @@
                   <!-- /.card-body -->
 
                   <div class="card-footer">
-                    <button class="btn btn-primary" id="createButton"  onclick="updateEntity();">Update</button>
+                    <button class="btn btn-primary" id="createButton"  onclick="updateEntityPage();">Update</button>
                     <button type="button" class="btn btn-default float-right" onclick="cancelAction();">Cancel</button>
                   </div>
 
@@ -199,26 +199,13 @@
 
   }
 
-
-  $('#exampleModal').on('show.bs.modal', function (event) {
-    var button = $(event.relatedTarget) // Button that triggered the modal
-    var recipient = button.data('whatever') // Extract info from data-* attributes
-    // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-    // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-    var modal = $(this)
-    modal.find('.modal-title').text('New message to ' + recipient)
-    //modal.find('.modal-body input').val(recipient)
-  });
-
-
-
   /**
    * API for create
    * Method: POST
    * Content-Type: application/json
    * */
-  function crudCreate(body, successFunction) {
-    alert(" updated " + updateApiUrl);
+  function updateApi(body, successFunction) {
+    
     $.ajax({
       url: updateApiUrl,
       type: 'POST',
@@ -249,12 +236,12 @@
     });
   }
   // invoke create API
-  function updateEntity() {
+  function updateEntityPage() {
     var body = crudUpsertEntity("#edit_");
     delete body.updatedDate
     delete body.createdDate
 
-    crudCreate(body, function(data, statusText, jqXHR) {
+    updateApi(body, function(data, statusText, jqXHR) {
       //$('#successText').html("Data create successfully.")
       //$('#successModal').modal('show');
       //document.getElementById("editForm").reset();
@@ -320,7 +307,6 @@
       if (value == opt.id) {
         value = opt.label;
         return;
-
       }
     });
     return value;

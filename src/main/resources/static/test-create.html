@@ -216,6 +216,9 @@
 
   });
 
+  $("#btnSuccess").click(function() {
+    document.location.href = "holiday2.html";
+  });
   $("#createForm").submit(function( event ) {
     event.preventDefault();
   });
@@ -245,7 +248,7 @@
    * Content-Type: application/json
    * */
   function crudCreate(body, successFunction) {
-    alert(" create " + createApiUrl);
+    //alert(" create " + createApiUrl);
     $.ajax({
       url: createApiUrl,
       type: 'POST',
