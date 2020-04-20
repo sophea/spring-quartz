@@ -21,6 +21,8 @@ public class SchedulerJobInfo  extends AbstractLongDomainEntity implements Seria
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String schedulerName;
+
     private String jobName;
 
     private String jobGroup;

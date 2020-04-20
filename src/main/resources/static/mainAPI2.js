@@ -211,60 +211,60 @@ function crudAddEntity(item, index, schema) {
 
 // populate update data to form
 function crudPopulateUpdate(primaryKey) {
-	
-	 var schema = $("#create-entity").data("schema");
-	 var value = primaryKey;
-	    
-	$('#tab-update').addClass('active');
-	$('#tab-home').removeClass('active');
-	hideNoResultAlert();
-	
-	
-   
-    $("#update_" + schema.primaryKeyName).val(value);
-    console.log(schema.columns);
-    
-    $.each(schema.columns, function(index, field) {
-    	
-    	var clazz = field.type;
-    	var key = field.name;
-    	
-    	var first = true;
-    	if (crudIsAuditField(key) || clazz == 'select') {
-            value = $("#" + primaryKey + "X" + key).val();
-        }
-        else {
-            value = $("#" + primaryKey + "X" + key).text();
-        }
-
-        if ("text" == clazz) {
-            $("#update_" + key).text(value);
-        }
-        else if("Collection" == clazz) {
-        	$('.update_collectionBox_'+key).html('');
-        	collection = value.split(",");
-        	for( item in collection ){
-        		var button = "";
-            	var firstClass = "";
-        		if(first) {
-            		button = "<div class='col-xs-1'><button class='btn btn-default btnAddCollection' prefix='update_' value='" + key + "'><span class='glyphicon glyphicon-plus'></span></button></div>";
-            		firstClass = "first";
-        		}
-            	
-        		$('.update_collectionBox_'+key).append("<div class='col-xs-11'><input type='text' class='form-control "+firstClass+" margin-bottom-5 update_collectionItem_" + key + "' value='" + collection[item] + "' placeholder='collection item'/>" +
-        				"<button class='btn btn-default btnRemoveItem'><span class='glyphicon glyphicon-minus'></span></button></div>"+button);
-        		first = false;
-        	}
-        }
-        else {
-            $("#update_" + key).val(value);
-        }
-        
-        //createdDate or updatedDate set readonly
-        if (key == 'createdDate' || key == 'updatedDate') {
-        	 $("#update_" + key).attr('readonly', true);
-        }
-    });
+	window.location.href = "edit.html?id=" + primaryKey;
+	//  var schema = $("#create-entity").data("schema");
+	//  var value = primaryKey;
+	//
+	// $('#tab-update').addClass('active');
+	// $('#tab-home').removeClass('active');
+	// hideNoResultAlert();
+	//
+	//
+	//
+    // $("#update_" + schema.primaryKeyName).val(value);
+    // console.log(schema.columns);
+    //
+    // $.each(schema.columns, function(index, field) {
+    //
+    // 	var clazz = field.type;
+    // 	var key = field.name;
+    //
+    // 	var first = true;
+    // 	if (crudIsAuditField(key) || clazz == 'select') {
+    //         value = $("#" + primaryKey + "X" + key).val();
+    //     }
+    //     else {
+    //         value = $("#" + primaryKey + "X" + key).text();
+    //     }
+	//
+    //     if ("text" == clazz) {
+    //         $("#update_" + key).text(value);
+    //     }
+    //     else if("Collection" == clazz) {
+    //     	$('.update_collectionBox_'+key).html('');
+    //     	collection = value.split(",");
+    //     	for( item in collection ){
+    //     		var button = "";
+    //         	var firstClass = "";
+    //     		if(first) {
+    //         		button = "<div class='col-xs-1'><button class='btn btn-default btnAddCollection' prefix='update_' value='" + key + "'><span class='glyphicon glyphicon-plus'></span></button></div>";
+    //         		firstClass = "first";
+    //     		}
+    //
+    //     		$('.update_collectionBox_'+key).append("<div class='col-xs-11'><input type='text' class='form-control "+firstClass+" margin-bottom-5 update_collectionItem_" + key + "' value='" + collection[item] + "' placeholder='collection item'/>" +
+    //     				"<button class='btn btn-default btnRemoveItem'><span class='glyphicon glyphicon-minus'></span></button></div>"+button);
+    //     		first = false;
+    //     	}
+    //     }
+    //     else {
+    //         $("#update_" + key).val(value);
+    //     }
+    //
+    //     //createdDate or updatedDate set readonly
+    //     if (key == 'createdDate' || key == 'updatedDate') {
+    //     	 $("#update_" + key).attr('readonly', true);
+    //     }
+    // });
 }
 
 // format date time to [MM/DD/YYYY, H:mm:ss P]

@@ -6,7 +6,7 @@ jwt:
 
 server:
     baseUrl: http://localhost:1
-    port: 8081
+    port: 8080
     compression.enabled: true
     compression.mime-types: application/json,application/xml,text/html,text/xml,text/plain
     error:
@@ -24,7 +24,7 @@ client:
     username: clientId
 spring:
     datasource:
-        password: password
+        password: root
         platform: org.hibernate.dialect.MySQL5Dialect
         url: jdbc:mysql://localhost:3306/quartz_demo_db
         username: root
@@ -61,7 +61,7 @@ spring:
                         instanceId: AUTO
                         instanceIdGenerator:
                             class: com.sma.quartz.component.CustomQuartzInstanceIdGenerator
-                        instanceName: quartz-app
+                        instanceName: quartz-app-001
                     threadPool:
                         threadCount: 20
 

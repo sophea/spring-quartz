@@ -46,7 +46,7 @@ public abstract class AbstractLongDomainEntity implements Serializable {
      */
 
     @CreatedBy
-    @Column(name = "createdBy", nullable = false, length = 50, updatable = false)
+    @Column(name = "createdBy", nullable = true, length = 50, updatable = false)
     @JsonIgnore
     private String createdBy;
     /**

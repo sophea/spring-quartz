@@ -1,0 +1,3 @@
+update from table where card_number='23443234343423'
+update from table where card_number='123456XXXXXX1234'
+update from table where card_number='58943234343423'

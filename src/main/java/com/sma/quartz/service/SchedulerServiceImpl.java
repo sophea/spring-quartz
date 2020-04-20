@@ -2,7 +2,6 @@ package com.sma.quartz.service;
 
 import com.sma.quartz.component.JobScheduleCreator;
 import com.sma.quartz.entity.SchedulerJobInfo;
-import com.sma.quartz.repository.SchedulerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.quartz.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 @Slf4j
 @Transactional
@@ -33,12 +31,25 @@ public class SchedulerServiceImpl implements SchedulerService {
     @Autowired
     private JobScheduleCreator scheduleCreator;
 
+//    @Autowired
+//    private SchedulerService schedulerService;
+
     @Override
     public void startAllSchedulers() {
-        final Collection<SchedulerJobInfo> jobInfoList = scheduleJobInfoService.getAll();
+        Scheduler scheduler = schedulerFactoryBean.getScheduler();
+        String schedulerName = "";
+        try {
+            schedulerName = scheduler.getSchedulerName();
+            log.info("Scheduler name {}", schedulerName);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+        final Collection<SchedulerJobInfo> jobInfoList = scheduleJobInfoService.getRepository().findBySchedulerName(schedulerName);
         if (jobInfoList != null) {
-            Scheduler scheduler = schedulerFactoryBean.getScheduler();
+
+
             jobInfoList.forEach(jobInfo -> {
+
                 try {
                     //update
                     updateScheduleJob(jobInfo);
@@ -145,7 +156,7 @@ public class SchedulerServiceImpl implements SchedulerService {
         boolean result = false;
         try {
             result = schedulerFactoryBean.getScheduler().deleteJob(new JobKey(jobInfo.getJobName(), jobInfo.getJobGroup()));
-            scheduleJobInfoService.getRepository().delete(jobInfo);
+         //   scheduleJobInfoService.getRepository().delete(jobInfo);
             unScheduleJob(jobInfo.getJobName());
         } catch (SchedulerException e) {
             log.error("Failed to delete job - {}", jobInfo.getJobName(), e);

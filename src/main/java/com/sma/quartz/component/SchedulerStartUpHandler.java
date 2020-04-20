@@ -19,7 +19,7 @@ public class SchedulerStartUpHandler implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-//        log.info("Schedule all new scheduler jobs at app startup - starting");
+        log.info("Schedule all new scheduler jobs at app startup - starting {}", args);
 //        try {
 //            schedulerService.startAllSchedulers();
 //            log.info("Schedule all new scheduler jobs at app startup - complete");
