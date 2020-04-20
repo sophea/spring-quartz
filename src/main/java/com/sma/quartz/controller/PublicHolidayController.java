@@ -172,9 +172,7 @@ public class PublicHolidayController {
      */
     @RequestMapping(value = "v1/schema", method = {RequestMethod.GET}, produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<Map<String, Object>> getSchema() {
-        final Map<String, Object> body = new HashMap<String, Object>();
-
-
+        final Map<String, Object> body = new HashMap<>();
         final List<Field> columns = new ArrayList<>();
         columns.add(new Field("name", "text"));
         columns.add(new Field("nameKh", "text"));

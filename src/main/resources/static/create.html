@@ -26,8 +26,6 @@
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
 
-
-
   <!-- Main content -->
   <section class="content">
     <div class="container-fluid">
@@ -216,9 +214,14 @@
 
   });
 
-  $("#btnSuccess").click(function() {
+  function backToPreviousPage() {
     document.location.href = "holiday2.html";
+  }
+
+  $("#btnSuccess").click(function() {
+    backToPreviousPage();
   });
+
   $("#createForm").submit(function( event ) {
     event.preventDefault();
   });
@@ -226,7 +229,7 @@
   function cancelAction() {
    // $("#infoMessage").html("Action has been cancel");
    // $("#infoModal").modal('show');
-
+    backToPreviousPage();
   }
 
 
