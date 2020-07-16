@@ -1,6 +1,9 @@
 package com.sma.quartz.jobs;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.exec.CommandLine;
+import org.apache.commons.exec.DefaultExecutor;
+import org.apache.commons.exec.PumpStreamHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -22,14 +25,6 @@ public class ExecuteBashCronJob extends QuartzJobBean {
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         log.info("ExecuteBashCronJob Start................");
 
-//        final boolean isWindows = System.getProperty("os.name").toLowerCase().startsWith("windows");
-//        final String homeDirectory = System.getProperty("user.home");
-//
-//        if (isWindows) {
-//           log.info("=============WindowOS================" + homeDirectory);
-//        } else {
-//           log.info("=============LinuxOS================" + homeDirectory);
-//        }
 
         final String bashScript = (String) context.getMergedJobDataMap().get("data");
 
@@ -55,7 +50,10 @@ public class ExecuteBashCronJob extends QuartzJobBean {
             //check mod +x
             Helper.command("chmod +x " + tmpFile.getAbsolutePath());
             //execute it
-            Helper.command(String.format("%s version-1", tmpFile.getAbsolutePath()), true);
+            //Helper.command(String.format("%s version-1", tmpFile.getAbsolutePath()), true);
+            execToFile("sh", tmpFile.getAbsolutePath(), "log.txt", " version-1");
+        } catch (IOException e) {
+          log.error(e.getMessage(), e);
         } finally {
             //cleanup tmp folder
             try {
@@ -66,6 +64,25 @@ public class ExecuteBashCronJob extends QuartzJobBean {
             log.info("ExecuteBashCronJob End..................");
 
         }
+    }
+
+    public static int execToFile(String command, String scriptFile, String logFile, String... params) throws IOException {
+        FileOutputStream fileOutputStream = new FileOutputStream(logFile, true);
+        PumpStreamHandler streamHandler = new PumpStreamHandler(fileOutputStream, fileOutputStream, null);
+
+        // command
+        CommandLine commandline = new CommandLine(command);
+        commandline.addArgument(scriptFile);
+        if (params!=null && params.length>0) {
+            commandline.addArguments(params);
+        }
+
+        // exec
+        DefaultExecutor exec = new DefaultExecutor();
+        exec.setExitValues(null);
+        exec.setStreamHandler(streamHandler);
+        int exitValue = exec.execute(commandline);  // exit code: 0=success, 1=error
+        return exitValue;
     }
 
 //    public static void main(String[] args) {

@@ -5,8 +5,8 @@ jwt:
     expiry-time-in-seconds: 14440
 
 server:
-    baseUrl: http://localhost:1
-    port: 8080
+    baseUrl: http://localhost
+    port: 8081
     compression.enabled: true
     compression.mime-types: application/json,application/xml,text/html,text/xml,text/plain
     error:
@@ -61,7 +61,7 @@ spring:
                         instanceId: AUTO
                         instanceIdGenerator:
                             class: com.sma.quartz.component.CustomQuartzInstanceIdGenerator
-                        instanceName: quartz-app-001
+                        instanceName: quartz-app
                     threadPool:
                         threadCount: 20
 

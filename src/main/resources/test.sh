@@ -14,5 +14,8 @@ fi
 
 VERSION=$1
 
+pwd
 
 echo "****deployment version $VERSION successfully ****"
+
+#sh -x /Users/sopheamak/workspace/spring-quartz/src/main/resources/test2.sh

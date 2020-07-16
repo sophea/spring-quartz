@@ -24,7 +24,7 @@ public class Helper {
             if (debug) {
                 log.info("[>] " + cmdline);
             }
-            final Process process = new ProcessBuilder(new String[]{"bash", "-c", cmdline})
+            final Process process = new ProcessBuilder(new String[]{"bash" , "-c", cmdline})
                 .redirectErrorStream(true)
                 .start();
            // process.waitFor(60, TimeUnit.SECONDS);
@@ -36,13 +36,13 @@ public class Helper {
                 return null;
             }
 
-           // process.destroy();
+            output = IOUtils.toString(process.getInputStream(), "utf-8");
+            log.info(output);
+            // process.destroy();
             //There should really be a timeout here.
             if (0 != process.waitFor()) {
                 return null;
             }
-            output = IOUtils.toString(process.getInputStream(), "utf-8");
-            log.info(output);
         } catch (Exception e) {
             //Warning: doing this is no good in high quality applications.
             //Instead, present appropriate error messages to the user.
